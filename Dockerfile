@@ -6,8 +6,8 @@ WORKDIR /app
 # Copy the Go project files
 COPY . .
 
-# Build the Go binary for the desired architecture (amd64 in this case)
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o myapp
+# Build the Go binary
+RUN CGO_ENABLED=0 GOOS=linux go build -o myapp
 
 # Stage 2: Create a minimal production image
 FROM alpine
