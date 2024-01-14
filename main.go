@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/a-h/templ"
-	"github.com/soockee/ssr-go/components"
+	"github.com/rs/zerolog/log"
 )
 
 func main() {
 
-	component := components.Hello("hello")
+	store, err := NewSQLiteStore()
+	if err != nil {
+		log.Fatal().AnErr("error", err).Str("message", "database error").Send()
+	}
 
-	http.Handle("/", templ.Handler(component))
-
-	fmt.Println("Listening on :3000")
-	http.ListenAndServe(":3000", nil)
+	fs := http.FileServer(http.Dir("./assets"))
+	server := NewApiServer(":3000", store, fs)
+	server.Run()
 }
