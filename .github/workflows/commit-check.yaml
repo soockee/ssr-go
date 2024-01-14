@@ -1,12 +1,14 @@
-name: Linters
+name: Conventional Commits Linter
 
-on: [pull_request]
+on:
+  pull_request:
+
 
 jobs:
-  validate-commits:
+  build:
+    name: Conventional Commits
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
-      - name: Commitsar check
-        uses: docker://aevea/commitsar
+      - uses: actions/checkout@v4
+
+      - uses: webiny/action-conventional-commits@v1.1.0
