@@ -1,0 +1,64 @@
+package components
+
+import "fmt"
+import "time"
+
+templ headerTemplate(name string) {
+	<header data-testid="headerTemplate">
+		<h1>{ name }</h1>
+	</header>
+}
+
+templ navTemplate() {
+	<nav data-testid="navTemplate">
+		<ul>
+			<li><a href="/">Home</a></li>
+			<li><a href="/test">Test :)</a></li>
+		</ul>
+	</nav>
+}
+
+templ footerTemplate() {
+	<footer data-testid="footerTemplate">
+		<div>&copy; { fmt.Sprintf("%d", time.Now().Year()) }</div>
+	</footer>
+}
+
+templ layout(name string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta http-equiv="Content-Security-Policy" content="script-src 'none'"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="https://unpkg.com/mvp.css"/> 
+			<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
+			<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
+			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+			<link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"/>
+			<link rel="shortcut icon" href="/assets/favicon/favicon.ico/"/>
+			<meta name="msapplication-TileColor" content="#da532c"/>
+			<meta name="msapplication-config" content="/assets/favicon/browserconfig.xml"/>
+			<meta name="theme-color" content="#ffffff"/>
+			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+			<meta name="description" content="Maintainer: S. Stockhause"/>
+			
+			<title>{ name }</title>
+		</head>
+		<body>
+			@headerTemplate(name)
+			@navTemplate()
+			<main>
+				{ children... }
+			</main>
+		</body>
+		@footerTemplate()
+	</html>
+}
+
+templ Home() {
+	@layout("Home") {
+		<div data-testid="homeTemplate">Welcome to my website.</div>
+	}
+}
