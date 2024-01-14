@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/soockee/ssr-go/compare/v1.0.0...v1.0.1) (2024-01-14)
+
+
+### Bug Fixes
+
+* add image publish workflow ([8fb133b](https://github.com/soockee/ssr-go/commit/8fb133b9107508f246b3056185974737c83cdb68))
+
 ## 1.0.0 (2024-01-14)
 
 
