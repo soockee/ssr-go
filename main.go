@@ -5,12 +5,12 @@ import (
 	"net/http"
 
 	"github.com/a-h/templ"
-	templates "github.com/soockee/ssr-go/templates"
+	"github.com/soockee/ssr-go/components"
 )
 
 func main() {
 
-	component := templates.Hello("John")
+	component := components.Hello("hello")
 
 	http.Handle("/", templ.Handler(component))
 
