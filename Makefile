@@ -6,7 +6,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
 # Binary name
-BINARY_NAME=myapp
+BINARY_NAME=main
 
 all: test build
 
