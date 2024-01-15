@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/soockee/ssr-go/compare/v1.0.2...v1.0.3) (2024-01-15)
+
+
+### Bug Fixes
+
+* change exposed port ([49c43ff](https://github.com/soockee/ssr-go/commit/49c43ff0f6ae1b8d39f72120e28a853d27c97684))
+
 ## [1.0.2](https://github.com/soockee/ssr-go/compare/v1.0.1...v1.0.2) (2024-01-15)
 
 
