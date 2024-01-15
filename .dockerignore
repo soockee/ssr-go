@@ -6,3 +6,4 @@ LICENSE
 Makefile
 NOTICE
 README.md
+*_templ.go
