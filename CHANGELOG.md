@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/soockee/ssr-go/compare/v1.0.1...v1.0.2) (2024-01-15)
+
+
+### Bug Fixes
+
+* add templ in build chain ([d685ee0](https://github.com/soockee/ssr-go/commit/d685ee016c794329dd2cd4edd35d0fa7fe0cbd00))
+
 ## [1.0.1](https://github.com/soockee/ssr-go/compare/v1.0.0...v1.0.1) (2024-01-14)
 
 
