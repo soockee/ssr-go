@@ -14,6 +14,6 @@ func main() {
 	}
 
 	fs := http.FileServer(http.Dir("./assets"))
-	server := NewApiServer(":3000", store, fs)
+	server := NewApiServer("0.0.0.0:80", store, fs)
 	server.Run()
 }
