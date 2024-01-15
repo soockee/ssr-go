@@ -1,6 +1,7 @@
+TEMPLCMD=templ
 # Go parameters
 GOCMD=go
-GOBUILD=$(GOCMD) build
+GOBUILD=$(TEMPLCMD) generate & $(GOCMD) build
 GOCLEAN=$(GOCMD) clean
 GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
@@ -11,6 +12,7 @@ BINARY_NAME=main
 all: test build
 
 build:
+
 	$(GOBUILD) -o $(BINARY_NAME) -v
 
 test:

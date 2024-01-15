@@ -1,0 +1,34 @@
+package components
+
+templ runningTemplate() {
+    <style type="text/css">
+        .running-container {
+            overflow: hidden;
+            position: relative;
+            width: 100%;
+            height: 200px; /* Adjust height as needed */
+        }
+
+        .running-gif {
+            position: absolute;
+            width: auto;
+            height: 100%;
+            animation: runAnimation 5s linear infinite; /* Adjust duration as needed */
+        }
+
+        @keyframes runAnimation {
+            0% {
+                left: -20%;
+            }
+            50% {
+                left: 20%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+    </style>
+	<div class="running-container" data-testid="running">
+        <img src="/assets/img/running.gif" alt="Running Person" class="running-gif"/>
+    </div>
+}

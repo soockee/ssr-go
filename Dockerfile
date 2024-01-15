@@ -1,25 +1,26 @@
+# Stage 1: Build the Go binary
 FROM golang:latest AS builder
 
 WORKDIR /app
 
-RUN go install github.com/a-h/templ/cmd/templ@latest
-
-COPY go.mod go.sum ./
-
-RUN go mod download
-
+# Copy the Go project files
 COPY . .
 
-RUN templ generate
+# Build the Go binary for the desired architecture (amd64 in this case)
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o myapp
 
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
-
-FROM alpine:latest
+# Stage 2: Create a minimal production image
+FROM scratch
 
 WORKDIR /app
 
-COPY --from=builder /app/main /app/main
+# Copy only the binary from the previous stage
+COPY --from=builder /app/myapp .
 
-EXPOSE 80
+COPY ./assets ./assets
 
-ENTRYPOINT ["./main"]
+# Expose the port that your application listens on
+EXPOSE 3000
+
+# Command to run the executable
+CMD ["./myapp"]

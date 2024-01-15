@@ -4,22 +4,21 @@ import "fmt"
 import "time"
 
 templ headerTemplate(name string) {
-	<header data-testid="headerTemplate">
+	<header>
 		<h1>{ name }</h1>
 	</header>
 }
 
 templ navTemplate() {
-	<nav data-testid="navTemplate">
+	<nav>
 		<ul>
 			<li><a href="/">Home</a></li>
-			<li><a href="/test">Test :)</a></li>
 		</ul>
 	</nav>
 }
 
 templ footerTemplate() {
-	<footer data-testid="footerTemplate">
+	<footer>
 		<div>&copy; { fmt.Sprintf("%d", time.Now().Year()) }</div>
 	</footer>
 }
@@ -46,9 +45,10 @@ templ layout(name string) {
 			
 			<title>{ name }</title>
 		</head>
-		<body>
 			@headerTemplate(name)
+		<body>
 			@navTemplate()
+			@runningTemplate()
 			<main>
 				{ children... }
 			</main>
@@ -59,6 +59,6 @@ templ layout(name string) {
 
 templ Home() {
 	@layout("Home") {
-		<div data-testid="homeTemplate">Welcome to my website.</div>
+		<div>Work in progress.</div>
 	}
 }
