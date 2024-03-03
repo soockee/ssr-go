@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/soockee/ssr-go/compare/v1.0.4...v1.0.5) (2024-03-03)
+
+
+### Bug Fixes
+
+* add components ([65a5c56](https://github.com/soockee/ssr-go/commit/65a5c56f5dc4c38ad53b1a310ff69ab24bbacc72))
+
 ## [1.0.4](https://github.com/soockee/ssr-go/compare/v1.0.3...v1.0.4) (2024-03-03)
 
 
