@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.6](https://github.com/soockee/ssr-go/compare/v1.0.5...v1.0.6) (2024-03-03)
+
+
+### Bug Fixes
+
+* remove go build args ([d015a7c](https://github.com/soockee/ssr-go/commit/d015a7c33c2cf528b190db7a2bdff0b86f9ac03f))
+* remove nested module ([0af9f1c](https://github.com/soockee/ssr-go/commit/0af9f1cdcdd2268ddf716072db5b1e22b8365008))
+
 ## [1.0.5](https://github.com/soockee/ssr-go/compare/v1.0.4...v1.0.5) (2024-03-03)
 
 
