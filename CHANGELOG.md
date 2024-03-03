@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/soockee/ssr-go/compare/v1.0.8...v1.0.9) (2024-03-03)
+
+
+### Bug Fixes
+
+* add https ([23e4e36](https://github.com/soockee/ssr-go/commit/23e4e3644cb2f0d08a690c570064f124638ad0c9))
+
 ## [1.0.8](https://github.com/soockee/ssr-go/compare/v1.0.7...v1.0.8) (2024-03-03)
 
 
