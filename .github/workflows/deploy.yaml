@@ -37,7 +37,7 @@ jobs:
       
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-        
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
@@ -47,5 +47,9 @@ jobs:
           context: .
           platforms: linux/arm64,linux/amd64
           push: true
+          secrets: |
+            "SSL_CACHE_DIR=${{ secrets.SSL_CACHE_DIR }}"
+            "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}"
+            "DEPLOYMENT_ENVIRONMENT=prod"
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}

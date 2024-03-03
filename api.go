@@ -1,6 +1,8 @@
 package main
 
 import (
+	"context"
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -10,6 +12,7 @@ import (
 	"github.com/a-h/templ"
 	"github.com/gorilla/mux"
 	"github.com/rs/zerolog"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 type apiFunc func(w http.ResponseWriter, r *http.Request) error
@@ -19,17 +22,25 @@ type ApiError struct {
 }
 
 type ApiServer struct {
-	listenAddr string
-	store      Storage
-	fs         http.Handler
+	listenAddr    string
+	store         Storage
+	fs            http.Handler
+	isProd        bool
+	domainName    string
+	ssl_cache_dir string
 }
 
-func NewApiServer(listenAddr string, store Storage, fs http.Handler) *ApiServer {
-	return &ApiServer{
+func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool) *ApiServer {
+	server := &ApiServer{
 		listenAddr: listenAddr,
 		store:      store,
 		fs:         fs,
+		isProd:     isProd,
 	}
+
+	server.domainName = os.Getenv("DOMAIN_NAME")
+	server.domainName = os.Getenv("SSL_CACHE_DIR")
+	return server
 }
 
 func WriteJson(w http.ResponseWriter, status int, v any) error {
@@ -60,9 +71,37 @@ func (s *ApiServer) Run() {
 
 	loggingMiddleware := LoggingMiddleware(logger)
 	loggedRouter := loggingMiddleware(router)
-	if err := http.ListenAndServe(s.listenAddr, loggedRouter); err != nil {
-		logger.Error().Err(err)
-		os.Exit(1)
+
+	if s.isProd {
+		hostPolicy := func(ctx context.Context, host string) error {
+			if host == s.domainName {
+				return nil
+			}
+			logger.Error().Msgf("acme/autocert: only %s host is allowed", s.domainName)
+			return nil
+		}
+		m := &autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			HostPolicy: hostPolicy,
+			Cache:      autocert.DirCache(s.ssl_cache_dir),
+		}
+		httpsServer := &http.Server{
+			ReadTimeout:  5 * time.Second,
+			WriteTimeout: 5 * time.Second,
+			IdleTimeout:  120 * time.Second,
+			Handler:      loggedRouter,
+			Addr:         ":443",
+			TLSConfig:    &tls.Config{GetCertificate: m.GetCertificate},
+		}
+		if err := httpsServer.ListenAndServeTLS("", ""); err != nil {
+			logger.Error().Err(err).Send()
+			os.Exit(1)
+		}
+	} else {
+		if err := http.ListenAndServe(s.listenAddr, loggedRouter); err != nil {
+			logger.Error().Err(err)
+			os.Exit(1)
+		}
 	}
 }
 

@@ -6,6 +6,11 @@ WORKDIR /app
 # Copy the Go project files
 COPY . .
 
+# Copy SSL certificate and private key
+ARG SSL_CACHE_DIR
+ARG DOMAIN_NAME
+ARG DEPLOYMENT_ENVIRONMENT
+
 RUN go install github.com/a-h/templ/cmd/templ@latest && templ generate
 
 # Build the Go binary for the desired architecture (amd64 in this case)
@@ -19,11 +24,15 @@ WORKDIR /app
 
 # Copy only the binary from the previous stage
 COPY --from=builder /app/myapp .
-
 COPY ./assets ./assets
 
+ENV SSL_CACHE_DIR=$SSL_CACHE_DIR
+ENV DOMAIN_NAME=$DOMAIN_NAME
+ENV DEPLOYMENT_ENVIRONMENT=$DEPLOYMENT_ENVIRONMENT
+
 # Expose the port that your application listens on
-EXPOSE 3000
+EXPOSE 443
+EXPOSE 80
 
 # Command to run the executable
 CMD ["./myapp"]
