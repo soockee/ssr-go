@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.7](https://github.com/soockee/ssr-go/compare/v1.0.6...v1.0.7) (2024-03-03)
+
+
+### Bug Fixes
+
+* add buildx setup step ([d52148d](https://github.com/soockee/ssr-go/commit/d52148d1418a4c1184e9a510cfe5bea2411358dd))
+
 ## [1.0.6](https://github.com/soockee/ssr-go/compare/v1.0.5...v1.0.6) (2024-03-03)
 
 
