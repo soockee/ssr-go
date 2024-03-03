@@ -12,7 +12,6 @@ BINARY_NAME=main
 all: test build
 
 build:
-
 	$(GOBUILD) -o $(BINARY_NAME) -v
 
 test:
