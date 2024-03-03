@@ -4,10 +4,7 @@ go 1.21.6
 
 require github.com/a-h/templ v0.2.598
 
-require (
-	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/soockee/ssr-go/components v0.0.0-20240303204623-69d20f760266 // indirect
-)
+require github.com/mattn/go-colorable v0.1.13 // indirect
 
 require (
 	github.com/dustin/go-humanize v1.0.1 // indirect
