@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Build the Go binary for the desired architecture (amd64 in this case)
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=arm64 go build -o myapp
+RUN CGO_ENABLED=0 go build -o myapp
 
 RUN go install github.com/a-h/templ/cmd/templ@latest && templ generate
 
