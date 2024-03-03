@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.0.4](https://github.com/soockee/ssr-go/compare/v1.0.3...v1.0.4) (2024-03-03)
+
+
+### Bug Fixes
+
+* add fun wip animation ([8d105bd](https://github.com/soockee/ssr-go/commit/8d105bd33ef720107aab81e5c27ce020883624cc))
+* add multiplatform built ([7332bb9](https://github.com/soockee/ssr-go/commit/7332bb9230b185dda7b9b6c6bf8e610559f0c84d))
+* reduce required go version ([0fe5af0](https://github.com/soockee/ssr-go/commit/0fe5af0454c87933d1647988ec0294f3cc66d83b))
+
 ## [1.0.3](https://github.com/soockee/ssr-go/compare/v1.0.2...v1.0.3) (2024-01-15)
 
 
