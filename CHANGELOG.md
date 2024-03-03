@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.8](https://github.com/soockee/ssr-go/compare/v1.0.7...v1.0.8) (2024-03-03)
+
+
+### Bug Fixes
+
+* use templ build before go build ([01d2e67](https://github.com/soockee/ssr-go/commit/01d2e674f7e6c35bb988e0825eda11243debb2fb))
+
 ## [1.0.7](https://github.com/soockee/ssr-go/compare/v1.0.6...v1.0.7) (2024-03-03)
 
 
