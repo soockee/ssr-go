@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/soockee/ssr-go/compare/v1.0.16...v1.1.0) (2024-03-04)
+
+
+### Features
+
+* enabled HTTPS and update log messages ([795e048](https://github.com/soockee/ssr-go/commit/795e0487071e3e18a306e5439d5e0384ec4eac4f))
+
 ## [1.0.16](https://github.com/soockee/ssr-go/compare/v1.0.15...v1.0.16) (2024-03-04)
 
 
