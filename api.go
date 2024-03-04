@@ -5,7 +5,6 @@ import (
 	"errors"
 	"net/http"
 	"os"
-	"runtime/debug"
 	"time"
 
 	"github.com/a-h/templ"
@@ -58,27 +57,6 @@ func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 	})
 }
 
-func httpsRedirectMiddleware(logger zerolog.Logger) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			defer func() {
-				if err := recover(); err != nil {
-					w.WriteHeader(http.StatusInternalServerError)
-					logger.Error().Any("err", err).Str("trace", string(debug.Stack())).Send()
-				}
-			}()
-
-			if r.TLS == nil {
-				http.Redirect(w, r, "https://"+r.Host+r.URL.String(), http.StatusMovedPermanently)
-				return
-			}
-			next.ServeHTTP(w, r)
-		}
-
-		return http.HandlerFunc(fn)
-	}
-}
-
 func (s *ApiServer) Run() {
 	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
 		Level(zerolog.TraceLevel).
@@ -103,16 +81,13 @@ func (s *ApiServer) Run() {
 			Email:      s.owner_email,
 		}
 
-		redirectMiddleware := httpsRedirectMiddleware(logger)
-		redirectRouter := redirectMiddleware(loggedRouter)
-
 		httpsServer := &http.Server{
 			ReadTimeout:  5 * time.Second,
 			WriteTimeout: 5 * time.Second,
 			IdleTimeout:  120 * time.Second,
 			Addr:         ":https",
 			TLSConfig:    certManager.TLSConfig(),
-			Handler:      redirectRouter,
+			Handler:      loggedRouter,
 		}
 
 		go func() {
@@ -134,8 +109,7 @@ func (s *ApiServer) Run() {
 
 	if certManager != nil {
 		// allow autocert handle Let's Encrypt auth callbacks over HTTP.
-		// it'll pass all other urls to our hanlder
-		httpServer.Handler = certManager.HTTPHandler(loggedRouter)
+		httpServer.Handler = certManager.HTTPHandler(nil)
 	}
 
 	if err := httpServer.ListenAndServe(); err != nil {
