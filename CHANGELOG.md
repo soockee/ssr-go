@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.12](https://github.com/soockee/ssr-go/compare/v1.0.11...v1.0.12) (2024-03-04)
+
+
+### Bug Fixes
+
+* add cache dir as function ([6e6f9f5](https://github.com/soockee/ssr-go/commit/6e6f9f595933fbb3282d9caef7a129e6311fc5e3))
+* remove secrets from build and prepare deploy stem ([9b29dbb](https://github.com/soockee/ssr-go/commit/9b29dbb44221eb0f1d32b570329d335d6199ce01))
+
 ## [1.0.11](https://github.com/soockee/ssr-go/compare/v1.0.10...v1.0.11) (2024-03-04)
 
 
