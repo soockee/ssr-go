@@ -6,10 +6,6 @@ WORKDIR /app
 # Copy the Go project files
 COPY . .
 
-# Copy SSL certificate and private key
-ARG SSL_CACHE_DIR
-ARG DOMAIN_NAME
-ARG DEPLOYMENT_ENVIRONMENT
 
 RUN go install github.com/a-h/templ/cmd/templ@latest && templ generate
 
@@ -27,9 +23,9 @@ WORKDIR /app
 COPY --from=builder /app/myapp .
 COPY ./assets ./assets
 
-ENV SSL_CACHE_DIR=$SSL_CACHE_DIR
-ENV DOMAIN_NAME=$DOMAIN_NAME
-ENV DEPLOYMENT_ENVIRONMENT=$DEPLOYMENT_ENVIRONMENT
+ENV SSL_CACHE_DIR=/certs
+ENV DOMAIN_NAME=localhost
+ENV DEPLOYMENT_ENVIRONMENT=dev
 
 # Expose the port that your application listens on
 EXPOSE 443
