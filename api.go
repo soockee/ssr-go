@@ -1,10 +1,13 @@
 package main
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"os"
+	"os/user"
+	"path/filepath"
 	"time"
 
 	"github.com/a-h/templ"
@@ -20,13 +23,12 @@ type ApiError struct {
 }
 
 type ApiServer struct {
-	listenAddr    string
-	store         Storage
-	fs            http.Handler
-	isProd        bool
-	domainName    string
-	ssl_cache_dir string
-	owner_email   string
+	listenAddr  string
+	store       Storage
+	fs          http.Handler
+	isProd      bool
+	domainName  string
+	owner_email string
 }
 
 func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool) *ApiServer {
@@ -38,7 +40,6 @@ func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool
 	}
 
 	server.domainName = os.Getenv("DOMAIN_NAME")
-	server.ssl_cache_dir = os.Getenv("SSL_CACHE_DIR")
 	server.owner_email = os.Getenv("OWNER_EMAIL")
 	return server
 }
@@ -50,7 +51,7 @@ func WriteJson(w http.ResponseWriter, status int, v any) error {
 }
 
 func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
-	return CORS(func(w http.ResponseWriter, r *http.Request) {
+	return cors(func(w http.ResponseWriter, r *http.Request) {
 		if err := f(w, r); err != nil {
 			WriteJson(w, http.StatusBadRequest, ApiError{Error: err.Error()})
 		}
@@ -74,11 +75,27 @@ func (s *ApiServer) Run() {
 
 	var certManager *autocert.Manager
 	if s.isProd {
+		logger.Info().Msgf("Cert Email: %s, Domain: %s", s.owner_email, s.domainName)
 		certManager = &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
-			Cache:      autocert.DirCache(s.ssl_cache_dir),
 			Email:      s.owner_email,
+		}
+
+		dir := cacheDir()
+		if dir != "" {
+			certManager.Cache = autocert.DirCache(dir)
+		}
+		logger.Info().Msgf("cache dir: %s", dir)
+
+		certManager = &autocert.Manager{
+			Prompt:     autocert.AcceptTOS,
+			HostPolicy: autocert.HostWhitelist(s.domainName),
+			Email:      s.owner_email,
+		}
+
+		tlsConfig := &tls.Config{
+			GetCertificate: certManager.GetCertificate,
 		}
 
 		httpsServer := &http.Server{
@@ -86,7 +103,7 @@ func (s *ApiServer) Run() {
 			WriteTimeout: 5 * time.Second,
 			IdleTimeout:  120 * time.Second,
 			Addr:         ":https",
-			TLSConfig:    certManager.TLSConfig(),
+			TLSConfig:    tlsConfig,
 			Handler:      loggedRouter,
 		}
 
@@ -133,7 +150,7 @@ func (s *ApiServer) handleHome(w http.ResponseWriter, r *http.Request) error {
 	return nil
 }
 
-func CORS(next http.HandlerFunc) http.HandlerFunc {
+func cors(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Access-Control-Allow-Origin", "*")
 		w.Header().Add("Access-Control-Allow-Credentials", "true")
@@ -142,4 +159,15 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 
 		next(w, r)
 	}
+}
+
+// cacheDir makes a consistent cache directory inside /tmp. Returns "" on error.
+func cacheDir() (dir string) {
+	if u, _ := user.Current(); u != nil {
+		dir = filepath.Join(os.TempDir(), "cache-golang-autocert-"+u.Username)
+		if err := os.MkdirAll(dir, 0700); err == nil {
+			return dir
+		}
+	}
+	return ""
 }

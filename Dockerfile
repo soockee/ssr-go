@@ -32,4 +32,4 @@ EXPOSE 443
 EXPOSE 80
 
 # Command to run the executable
-CMD ["./myapp"]
+ENTRYPOINT ["./myapp"]
