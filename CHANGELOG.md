@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.10](https://github.com/soockee/ssr-go/compare/v1.0.9...v1.0.10) (2024-03-04)
+
+
+### Bug Fixes
+
+* change base image for debugging ([8add288](https://github.com/soockee/ssr-go/commit/8add28841fbdb35a62cbba0b443e71a7c57cc2f2))
+* refactor https ([5d2d147](https://github.com/soockee/ssr-go/commit/5d2d147227cb75aa27ce9908da1e84e8c60f60d3))
+
 ## [1.0.9](https://github.com/soockee/ssr-go/compare/v1.0.8...v1.0.9) (2024-03-03)
 
 
