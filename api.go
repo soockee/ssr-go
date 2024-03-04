@@ -66,9 +66,8 @@ func (s *ApiServer) Run() {
 	loggingMiddleware := LoggingMiddleware(logger)
 	loggedRouter := loggingMiddleware(router)
 
-	var certManager *autocert.Manager
 	if s.isProd {
-		certManager = &autocert.Manager{
+		certManager := &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
 			Cache:      autocert.DirCache("./certs"),
