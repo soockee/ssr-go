@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.11](https://github.com/soockee/ssr-go/compare/v1.0.10...v1.0.11) (2024-03-04)
+
+
+### Bug Fixes
+
+* change from secrets to build-args to get them into container ([eae05dd](https://github.com/soockee/ssr-go/commit/eae05ddaf43060d34c31ab31aaf1cd2628a62538))
+* remove redirectHandler, because certMang redirects by default ([02cb00c](https://github.com/soockee/ssr-go/commit/02cb00c07d4af5089fdb46c91d2ceec97ba332e1))
+
 ## [1.0.10](https://github.com/soockee/ssr-go/compare/v1.0.9...v1.0.10) (2024-03-04)
 
 
