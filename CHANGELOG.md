@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.13](https://github.com/soockee/ssr-go/compare/v1.0.12...v1.0.13) (2024-03-04)
+
+
+### Bug Fixes
+
+* add flag ([35a8ab5](https://github.com/soockee/ssr-go/commit/35a8ab59e106aa76936d91dfbf3ad3baa2ce4158))
+* refactor autocert ([b29e532](https://github.com/soockee/ssr-go/commit/b29e532f5fed207b16571c4441f61bb9af23ba05))
+* remove certmanger pointer ([15e8b55](https://github.com/soockee/ssr-go/commit/15e8b555bbe347463c9be067fad8d762d45b0758))
+* remove listenAddr default to https/http ([c7e0fe6](https://github.com/soockee/ssr-go/commit/c7e0fe6694fe69abfac80c0815ed95ce775e2788))
+
 ## [1.0.12](https://github.com/soockee/ssr-go/compare/v1.0.11...v1.0.12) (2024-03-04)
 
 
