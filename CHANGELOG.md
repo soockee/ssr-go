@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.14](https://github.com/soockee/ssr-go/compare/v1.0.13...v1.0.14) (2024-03-04)
+
+
+### Bug Fixes
+
+* switch to slog for logging ([85adc1d](https://github.com/soockee/ssr-go/commit/85adc1d0c9df1999f4dda1ee7ccb22e84bcbffec))
+
 ## [1.0.13](https://github.com/soockee/ssr-go/compare/v1.0.12...v1.0.13) (2024-03-04)
 
 
