@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.15](https://github.com/soockee/ssr-go/compare/v1.0.14...v1.0.15) (2024-03-04)
+
+
+### Bug Fixes
+
+* fix dockerfile apt install ([1364b4b](https://github.com/soockee/ssr-go/commit/1364b4b71f37af06f1d90d8bae21c69eeaeca397))
+
 ## [1.0.14](https://github.com/soockee/ssr-go/compare/v1.0.13...v1.0.14) (2024-03-04)
 
 
