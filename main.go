@@ -23,6 +23,6 @@ func main() {
 	flag.Parse()
 
 	log.Info().Msg("Starting Server")
-	server := NewApiServer("0.0.0.0:80", store, fs, isProd)
+	server := NewApiServer(store, fs, isProd)
 	server.Run()
 }

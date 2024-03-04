@@ -20,19 +20,17 @@ type ApiError struct {
 }
 
 type ApiServer struct {
-	listenAddr string
 	store      Storage
 	fs         http.Handler
 	isProd     bool
 	domainName string
 }
 
-func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool) *ApiServer {
+func NewApiServer(store Storage, fs http.Handler, isProd bool) *ApiServer {
 	server := &ApiServer{
-		listenAddr: listenAddr,
-		store:      store,
-		fs:         fs,
-		isProd:     isProd,
+		store:  store,
+		fs:     fs,
+		isProd: isProd,
 	}
 
 	server.domainName = "stockhause.info"
@@ -95,7 +93,7 @@ func (s *ApiServer) Run() {
 			ReadTimeout:  5 * time.Second,
 			WriteTimeout: 5 * time.Second,
 			IdleTimeout:  120 * time.Second,
-			Addr:         s.listenAddr,
+			Addr:         ":http",
 			Handler:      loggedRouter,
 		}
 
