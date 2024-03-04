@@ -1,6 +1,0 @@
-# name: Deploy to machine
-# build-args: |
-# "SSL_CACHE_DIR=${{ secrets.SSL_CACHE_DIR }}"
-# "DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}"
-# "OWNER_EMAIL=${{ secrets.OWNER_EMAIL }}"
-# "DEPLOYMENT_ENVIRONMENT=prod"

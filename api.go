@@ -1,13 +1,10 @@
 package main
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"net/http"
 	"os"
-	"os/user"
-	"path/filepath"
 	"time"
 
 	"github.com/a-h/templ"
@@ -39,7 +36,7 @@ func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool
 		isProd:     isProd,
 	}
 
-	server.domainName = os.Getenv("DOMAIN_NAME")
+	server.domainName = "stockhause.info"
 	server.owner_email = os.Getenv("OWNER_EMAIL")
 	return server
 }
@@ -75,27 +72,18 @@ func (s *ApiServer) Run() {
 
 	var certManager *autocert.Manager
 	if s.isProd {
-		logger.Info().Msgf("Cert Email: %s, Domain: %s", s.owner_email, s.domainName)
+		logger.Info().Msgf("Cert Email: %s", s.owner_email)
 		certManager = &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
 			Email:      s.owner_email,
+			Cache:      autocert.DirCache("./certs"),
 		}
-
-		dir := cacheDir()
-		if dir != "" {
-			certManager.Cache = autocert.DirCache(dir)
-		}
-		logger.Info().Msgf("cache dir: %s", dir)
 
 		certManager = &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
 			Email:      s.owner_email,
-		}
-
-		tlsConfig := &tls.Config{
-			GetCertificate: certManager.GetCertificate,
 		}
 
 		httpsServer := &http.Server{
@@ -103,35 +91,28 @@ func (s *ApiServer) Run() {
 			WriteTimeout: 5 * time.Second,
 			IdleTimeout:  120 * time.Second,
 			Addr:         ":https",
-			TLSConfig:    tlsConfig,
+			TLSConfig:    certManager.TLSConfig(),
 			Handler:      loggedRouter,
 		}
 
-		go func() {
-			logger.Info().Msg("Starting HTTPS sever")
-			if err := httpsServer.ListenAndServeTLS("", ""); err != nil {
-				logger.Error().Err(err).Send()
-				os.Exit(1)
-			}
-		}()
-	}
+		logger.Info().Msg("Starting HTTPS sever")
+		if err := httpsServer.ListenAndServeTLS("", ""); err != nil {
+			logger.Error().Err(err).Send()
+			os.Exit(1)
+		}
+	} else {
+		httpServer := &http.Server{
+			ReadTimeout:  5 * time.Second,
+			WriteTimeout: 5 * time.Second,
+			IdleTimeout:  120 * time.Second,
+			Addr:         s.listenAddr,
+			Handler:      loggedRouter,
+		}
 
-	httpServer := &http.Server{
-		ReadTimeout:  5 * time.Second,
-		WriteTimeout: 5 * time.Second,
-		IdleTimeout:  120 * time.Second,
-		Addr:         s.listenAddr,
-		Handler:      loggedRouter,
-	}
-
-	if certManager != nil {
-		// allow autocert handle Let's Encrypt auth callbacks over HTTP.
-		httpServer.Handler = certManager.HTTPHandler(nil)
-	}
-
-	if err := httpServer.ListenAndServe(); err != nil {
-		logger.Error().Err(err)
-		os.Exit(1)
+		if err := httpServer.ListenAndServe(); err != nil {
+			logger.Error().Err(err)
+			os.Exit(1)
+		}
 	}
 }
 
@@ -159,15 +140,4 @@ func cors(next http.HandlerFunc) http.HandlerFunc {
 
 		next(w, r)
 	}
-}
-
-// cacheDir makes a consistent cache directory inside /tmp. Returns "" on error.
-func cacheDir() (dir string) {
-	if u, _ := user.Current(); u != nil {
-		dir = filepath.Join(os.TempDir(), "cache-golang-autocert-"+u.Username)
-		if err := os.MkdirAll(dir, 0700); err == nil {
-			return dir
-		}
-	}
-	return ""
 }
