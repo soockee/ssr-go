@@ -3,13 +3,13 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 	"os"
 	"time"
 
 	"github.com/a-h/templ"
 	"github.com/gorilla/mux"
-	"github.com/rs/zerolog"
 	"golang.org/x/crypto/acme/autocert"
 )
 
@@ -52,12 +52,8 @@ func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 }
 
 func (s *ApiServer) Run() {
-	logger := zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339}).
-		Level(zerolog.TraceLevel).
-		With().
-		Timestamp().
-		Caller().
-		Logger()
+	logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	serverLogger := slog.NewLogLogger(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug}), slog.LevelDebug)
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
@@ -70,7 +66,7 @@ func (s *ApiServer) Run() {
 		certManager := &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
-			Cache:      autocert.DirCache("./certs"),
+			Cache:      autocert.DirCache("/certs"),
 		}
 
 		httpsServer := &http.Server{
@@ -80,11 +76,12 @@ func (s *ApiServer) Run() {
 			Addr:         ":https",
 			TLSConfig:    certManager.TLSConfig(),
 			Handler:      loggedRouter,
+			ErrorLog:     serverLogger,
 		}
 
-		logger.Info().Msg("Starting HTTPS sever")
+		logger.Info("Starting HTTPS sever")
 		if err := httpsServer.ListenAndServeTLS("", ""); err != nil {
-			logger.Error().Err(err).Send()
+			logger.Error("msg", err)
 			os.Exit(1)
 		}
 	} else {
@@ -94,10 +91,11 @@ func (s *ApiServer) Run() {
 			IdleTimeout:  120 * time.Second,
 			Addr:         ":http",
 			Handler:      loggedRouter,
+			ErrorLog:     serverLogger,
 		}
 
 		if err := httpServer.ListenAndServe(); err != nil {
-			logger.Error().Err(err)
+			logger.Error("msg", err)
 			os.Exit(1)
 		}
 	}

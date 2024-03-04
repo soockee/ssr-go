@@ -8,7 +8,6 @@ require (
 )
 
 require (
-	github.com/mattn/go-colorable v0.1.13 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 )
@@ -19,7 +18,6 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	github.com/rs/zerolog v1.31.0
 	golang.org/x/sys v0.17.0 // indirect
 	modernc.org/libc v1.29.0 // indirect
 	modernc.org/mathutil v1.6.0 // indirect

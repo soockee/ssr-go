@@ -16,20 +16,19 @@ RUN CGO_ENABLED=0 go build -o myapp
 # Stage 2: Create a minimal production image
 FROM arm64v8/ubuntu:22.04
 
-RUN apt update && apt install bash
+RUN apt update && apt install-y bash ca-certificate && rm -rf /var/cache/apt/*
 WORKDIR /app
 
 # Copy only the binary from the previous stage
 COPY --from=builder /app/myapp .
 COPY ./assets ./assets
 
-ENV SSL_CACHE_DIR=/certs
-ENV DOMAIN_NAME=localhost
-ENV DEPLOYMENT_ENVIRONMENT=dev
-
 # Expose the port that your application listens on
 EXPOSE 443
 EXPOSE 80
+
+VOLUME ["/certs"]
+
 
 # Command to run the executable
 ENTRYPOINT ["./myapp"]

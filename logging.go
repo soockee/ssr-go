@@ -1,11 +1,10 @@
 package main
 
 import (
+	"log/slog"
 	"net/http"
 	"runtime/debug"
 	"time"
-
-	"github.com/rs/zerolog"
 )
 
 // responseWriter is a minimal wrapper for http.ResponseWriter that allows the
@@ -34,20 +33,20 @@ func (rw *responseWriter) WriteHeader(code int) {
 	rw.wroteHeader = true
 }
 
-func LoggingMiddleware(logger zerolog.Logger) func(http.Handler) http.Handler {
+func LoggingMiddleware(logger *slog.Logger) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			defer func() {
 				if err := recover(); err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
-					logger.Error().Any("err", err).Str("trace", string(debug.Stack())).Send()
+					logger.Error("trace", string(debug.Stack()), err)
 				}
 			}()
 
 			start := time.Now()
 			wrapped := wrapResponseWriter(w)
 			next.ServeHTTP(wrapped, r)
-			logger.Info().Int("status", wrapped.status).Str("method", r.Method).Str("path", r.URL.EscapedPath()).Dur("duration", time.Since(start)).Send()
+			logger.Info("msg", slog.Int("status", wrapped.status), slog.String("method", r.Method), slog.String("path", r.URL.EscapedPath()), slog.Duration("duration", time.Since(start)))
 		}
 
 		return http.HandlerFunc(fn)
