@@ -39,14 +39,14 @@ func LoggingMiddleware(logger *slog.Logger) func(http.Handler) http.Handler {
 			defer func() {
 				if err := recover(); err != nil {
 					w.WriteHeader(http.StatusInternalServerError)
-					logger.Error("trace", string(debug.Stack()), err)
+					logger.Error("Recovered from panic", err, string(debug.Stack()), err)
 				}
 			}()
 
 			start := time.Now()
 			wrapped := wrapResponseWriter(w)
 			next.ServeHTTP(wrapped, r)
-			logger.Info("msg", slog.Int("status", wrapped.status), slog.String("method", r.Method), slog.String("path", r.URL.EscapedPath()), slog.Duration("duration", time.Since(start)))
+			logger.Info("Handled HTTP request successfully", slog.Int("status", wrapped.status), slog.String("method", r.Method), slog.String("path", r.URL.EscapedPath()), slog.Duration("duration", time.Since(start)))
 		}
 
 		return http.HandlerFunc(fn)

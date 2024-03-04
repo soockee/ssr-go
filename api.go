@@ -81,7 +81,7 @@ func (s *ApiServer) Run() {
 
 		logger.Info("Starting HTTPS sever")
 		if err := httpsServer.ListenAndServeTLS("", ""); err != nil {
-			logger.Error("msg", err)
+			logger.Error("Failed to start HTTPS server", err)
 			os.Exit(1)
 		}
 	} else {
@@ -95,7 +95,7 @@ func (s *ApiServer) Run() {
 		}
 
 		if err := httpServer.ListenAndServe(); err != nil {
-			logger.Error("msg", err)
+			logger.Error("Failed to start HTTP server", err)
 			os.Exit(1)
 		}
 	}
