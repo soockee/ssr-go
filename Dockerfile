@@ -18,8 +18,9 @@ RUN CGO_ENABLED=0 go build -o myapp
 
 
 # Stage 2: Create a minimal production image
-FROM scratch
+FROM arm64v8/ubuntu:22.04
 
+RUN apt update && apt install bash
 WORKDIR /app
 
 # Copy only the binary from the previous stage

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"crypto/tls"
 	"encoding/json"
 	"errors"
 	"net/http"
@@ -112,11 +111,8 @@ func (s *ApiServer) Run() {
 			WriteTimeout: 5 * time.Second,
 			IdleTimeout:  120 * time.Second,
 			Addr:         ":https",
-			TLSConfig: &tls.Config{
-				GetCertificate: certManager.GetCertificate,
-				MinVersion:     tls.VersionTLS13, // improves cert reputation score at https://www.ssllabs.com/ssltest/
-			},
-			Handler: redirectRouter,
+			TLSConfig:    certManager.TLSConfig(),
+			Handler:      redirectRouter,
 		}
 
 		go func() {
