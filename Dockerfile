@@ -16,7 +16,7 @@ RUN CGO_ENABLED=0 go build -o myapp
 # Stage 2: Create a minimal production image
 FROM arm64v8/ubuntu:22.04
 
-RUN apt update && apt install -y bash ca-certificate && rm -rf /var/cache/apt/*
+RUN apt update && apt install -y bash ca-certificates && rm -rf /var/cache/apt/*
 WORKDIR /app
 
 # Copy only the binary from the previous stage
