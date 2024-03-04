@@ -20,12 +20,11 @@ type ApiError struct {
 }
 
 type ApiServer struct {
-	listenAddr  string
-	store       Storage
-	fs          http.Handler
-	isProd      bool
-	domainName  string
-	owner_email string
+	listenAddr string
+	store      Storage
+	fs         http.Handler
+	isProd     bool
+	domainName string
 }
 
 func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool) *ApiServer {
@@ -37,7 +36,6 @@ func NewApiServer(listenAddr string, store Storage, fs http.Handler, isProd bool
 	}
 
 	server.domainName = "stockhause.info"
-	server.owner_email = os.Getenv("OWNER_EMAIL")
 	return server
 }
 
@@ -72,18 +70,10 @@ func (s *ApiServer) Run() {
 
 	var certManager *autocert.Manager
 	if s.isProd {
-		logger.Info().Msgf("Cert Email: %s", s.owner_email)
 		certManager = &autocert.Manager{
 			Prompt:     autocert.AcceptTOS,
 			HostPolicy: autocert.HostWhitelist(s.domainName),
-			Email:      s.owner_email,
 			Cache:      autocert.DirCache("./certs"),
-		}
-
-		certManager = &autocert.Manager{
-			Prompt:     autocert.AcceptTOS,
-			HostPolicy: autocert.HostWhitelist(s.domainName),
-			Email:      s.owner_email,
 		}
 
 		httpsServer := &http.Server{

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"flag"
 	"net/http"
-	"os"
 
 	"github.com/rs/zerolog/log"
 )
@@ -18,11 +18,9 @@ func main() {
 	log.Info().Msg("Setup FileServer...")
 	fs := http.FileServer(http.Dir("./assets"))
 
-	isProd := false
-	if os.Getenv("DEPLOYMENT_ENVIRONMENT") == "prod" {
-		isProd = true
-	}
-	log.Info().Msgf("IsProd: %t", isProd)
+	var isProd bool
+	flag.BoolVar(&isProd, "isProd", false, "Set to true if running in production environment")
+	flag.Parse()
 
 	log.Info().Msg("Starting Server")
 	server := NewApiServer("0.0.0.0:80", store, fs, isProd)
