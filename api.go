@@ -12,7 +12,7 @@ import (
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/acme/autocert"
 
-	"github.com/soockee/ssr-go/components" 
+	"github.com/soockee/ssr-go/components"
 )
 
 type apiFunc func(w http.ResponseWriter, r *http.Request) error
@@ -59,6 +59,7 @@ func (s *ApiServer) Run() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
+	router.HandleFunc("/games/{id}", makeHTTPHandleFunc(s.handleGames))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", s.fs))
 
 	loggingMiddleware := LoggingMiddleware(logger)
@@ -116,6 +117,37 @@ func (s *ApiServer) handleHome(w http.ResponseWriter, r *http.Request) error {
 		return errors.New("method not allowed")
 	}
 	return nil
+}
+
+func (s *ApiServer) handleGames(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
+	case "GET":
+		return s.handleGetGames(w, r)
+	default:
+		return errors.New("game not found")
+	}
+}
+
+func (s *ApiServer) handleGetGames(w http.ResponseWriter, r *http.Request) error {
+	idStr := mux.Vars(r)["id"]
+	switch idStr {
+	case "snake":
+		return s.handleSnake(w, r)
+	default:
+		return errors.New("method not allowed")
+	}
+}
+
+func (s *ApiServer) handleSnake(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
+	case "GET":
+		component := components.Snake()
+		handler := templ.Handler(component)
+		handler.ServeHTTP(w, r)
+		return nil
+	default:
+		return errors.New("method not allowed")
+	}
 }
 
 func cors(next http.HandlerFunc) http.HandlerFunc {
