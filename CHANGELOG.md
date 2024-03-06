@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.1](https://github.com/soockee/ssr-go/compare/v1.1.0...v1.1.1) (2024-03-06)
+
+
+### Bug Fixes
+
+* add components package ([76db267](https://github.com/soockee/ssr-go/commit/76db267dcc0c4d50643d114277c4724bdbed2b07))
+* add snake ([a29dbed](https://github.com/soockee/ssr-go/commit/a29dbeda3db210e11cbda38197426e73c71575e4))
+* update readme ([b20ab12](https://github.com/soockee/ssr-go/commit/b20ab12f22c95aaa039620ff73034c32b493508a))
+
 ## [1.1.0](https://github.com/soockee/ssr-go/compare/v1.0.16...v1.1.0) (2024-03-04)
 
 
