@@ -11,6 +11,8 @@ import (
 	"github.com/a-h/templ"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/acme/autocert"
+
+	"github.com/soockee/ssr-go/components" 
 )
 
 type apiFunc func(w http.ResponseWriter, r *http.Request) error
@@ -104,7 +106,7 @@ func (s *ApiServer) Run() {
 func (s *ApiServer) handleHome(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case "GET":
-		component := Home()
+		component := components.Home()
 		handler := templ.Handler(component)
 		handler.ServeHTTP(w, r)
 		return nil
