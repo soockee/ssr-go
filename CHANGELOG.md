@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.2](https://github.com/soockee/ssr-go/compare/v1.1.1...v1.1.2) (2024-03-07)
+
+
+### Bug Fixes
+
+* add tictacgoe ([fe49cc3](https://github.com/soockee/ssr-go/commit/fe49cc305daef0c5bfa0df4c12d0f151e73d97fe))
+* add tictacgoe ([c1294a0](https://github.com/soockee/ssr-go/commit/c1294a09771cce78605318a6eb9a01ce9b804763))
+* update readme ([07857d4](https://github.com/soockee/ssr-go/commit/07857d486ea6cf9f331120a92142ff66421a6bcb))
+
 ## [1.1.1](https://github.com/soockee/ssr-go/compare/v1.1.0...v1.1.1) (2024-03-06)
 
 
