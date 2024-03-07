@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.3](https://github.com/soockee/ssr-go/compare/v1.1.2...v1.1.3) (2024-03-07)
+
+
+### Bug Fixes
+
+* update snake ([6c1d89b](https://github.com/soockee/ssr-go/commit/6c1d89b995a69010c8ccd8e5275e950335b125f4))
+* update snake to v0.0.6 ([9d081a9](https://github.com/soockee/ssr-go/commit/9d081a900006b3d4ce1942e06ba9f96f08ab79e7))
+
 ## [1.1.2](https://github.com/soockee/ssr-go/compare/v1.1.1...v1.1.2) (2024-03-07)
 
 
