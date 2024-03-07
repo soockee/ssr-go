@@ -1,0 +1,43 @@
+package components
+
+templ TicTacGoe() {
+	<head>
+        <meta charset="utf-8"></meta>
+        <script>
+            // Get the origin (protocol, hostname, and port) of the current page
+            const origin = window.location.origin;
+            // Construct the script source URL using the origin and relative path
+            const scriptSrc = `${origin}/assets/js/wasm_exec.js`;
+            // Create a new script element and set its src attribute
+            // Fetch the script content
+            fetch(scriptSrc)
+                .then(response => response.text())
+                .then(scriptContent => {
+                    // Execute the script using eval
+                    eval(scriptContent);
+                    if (WebAssembly) {
+                    // WebAssembly.instantiateStreaming is not currently available in Safari
+                    if (WebAssembly && !WebAssembly.instantiateStreaming) { // polyfill
+                        WebAssembly.instantiateStreaming = async (resp, importObject) => {
+                        const source = await (await resp).arrayBuffer();
+                            return await WebAssembly.instantiate(source, importObject);
+                        };
+                    }  
+                    let game = `${origin}/assets/games/tictacgoe.wasm`
+                    const go = new Go();
+                    WebAssembly.instantiateStreaming(fetch(game), go.importObject).then((result) => {
+                        go.run(result.instance);
+                    });
+                    } else {
+                        console.log("WebAssembly is not supported in your browser")
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching script:', error);
+                }); 
+        </script>
+    </head>
+    <body>
+        <main id="wasm"></main>
+    </body>
+}
