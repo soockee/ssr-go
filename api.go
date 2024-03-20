@@ -135,6 +135,8 @@ func (s *ApiServer) handleGetGames(w http.ResponseWriter, r *http.Request) error
 		return s.handleSnake(w, r)
 	case "tictacgoe":
 		return s.handleTicTacGoe(w, r)
+	case "stuffedserpent":
+		return s.handleStuffedSerpent(w, r)
 	default:
 		return errors.New("method not allowed")
 	}
@@ -164,6 +166,17 @@ func (s *ApiServer) handleTicTacGoe(w http.ResponseWriter, r *http.Request) erro
 	}
 }
 
+func (s *ApiServer) handleStuffedSerpent(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
+	case "GET":
+		component := components.StuffedSerpent()
+		handler := templ.Handler(component)
+		handler.ServeHTTP(w, r)
+		return nil
+	default:
+		return errors.New("method not allowed")
+	}
+}
 
 func cors(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
