@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/soockee/ssr-go/compare/v1.1.3...v1.2.0) (2024-03-20)
+
+
+### Features
+
+* add Stuffed Serpent game ([72750b9](https://github.com/soockee/ssr-go/commit/72750b9902dd4b0d0d70e4e4b942d08b6491d413))
+
 ## [1.1.3](https://github.com/soockee/ssr-go/compare/v1.1.2...v1.1.3) (2024-03-07)
 
 
