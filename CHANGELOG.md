@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.1](https://github.com/soockee/ssr-go/compare/v1.2.0...v1.2.1) (2024-03-21)
+
+
+### Bug Fixes
+
+* add build based on env ([96e08e6](https://github.com/soockee/ssr-go/commit/96e08e63ae7230beda321aab85db5107b8765518))
+* update stuffed serpent to 0.0.4 ([cdf7024](https://github.com/soockee/ssr-go/commit/cdf7024100530a4e4d6f1489c5aec00cfeaf6e91))
+* update stuffed serpent, update dependencies ([27e127e](https://github.com/soockee/ssr-go/commit/27e127e2e2b43adc46b09fd9b203cc7b1229db88))
+
 ## [1.2.0](https://github.com/soockee/ssr-go/compare/v1.1.3...v1.2.0) (2024-03-20)
 
 
