@@ -3,7 +3,7 @@ module github.com/soockee/ssr-go
 go 1.21.6
 
 require (
-	github.com/a-h/templ v0.2.598
+	github.com/a-h/templ v0.2.639
 	golang.org/x/crypto v0.20.0
 )
 
