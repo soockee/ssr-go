@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/soockee/ssr-go/compare/v1.2.1...v1.2.2) (2024-03-21)
+
+
+### Bug Fixes
+
+* remove unused flag ([2037639](https://github.com/soockee/ssr-go/commit/2037639598f1167dc7f5565e963a6ea3461b0391))
+* update stuffed serpent to 0.0.5 ([0638a3b](https://github.com/soockee/ssr-go/commit/0638a3bef3fc122c05aafcb5dfefea751e3e4b21))
+
 ## [1.2.1](https://github.com/soockee/ssr-go/compare/v1.2.0...v1.2.1) (2024-03-21)
 
 
