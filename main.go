@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log/slog"
 	"net/http"
 )
@@ -16,10 +15,6 @@ func main() {
 
 	fs := http.FileServer(http.Dir("./assets"))
 
-	var isProd bool
-	flag.BoolVar(&isProd, "isProd", false, "Set to true if running in production environment")
-	flag.Parse()
-
-	server := NewApiServer(store, fs, isProd)
+	server := NewApiServer(store, fs)
 	server.Run()
 }

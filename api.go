@@ -20,15 +20,13 @@ type ApiError struct {
 type ApiServer struct {
 	store      Storage
 	fs         http.Handler
-	isProd     bool
 	domainName string
 }
 
-func NewApiServer(store Storage, fs http.Handler, isProd bool) *ApiServer {
+func NewApiServer(store Storage, fs http.Handler) *ApiServer {
 	server := &ApiServer{
-		store:  store,
-		fs:     fs,
-		isProd: isProd,
+		store: store,
+		fs:    fs,
 	}
 
 	server.domainName = "stockhause.info"
