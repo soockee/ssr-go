@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/soockee/ssr-go/compare/v1.2.2...v1.2.3) (2024-03-22)
+
+
+### Bug Fixes
+
+* update stuffed serpent to v0.0.6 ([9e1f3fd](https://github.com/soockee/ssr-go/commit/9e1f3fd58a231bfd8cee59843bfb8b29dc50eba1))
+
 ## [1.2.2](https://github.com/soockee/ssr-go/compare/v1.2.1...v1.2.2) (2024-03-21)
 
 
