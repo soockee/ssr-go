@@ -33,6 +33,16 @@ func NewApiServer(store Storage, fs http.Handler) *ApiServer {
 	return server
 }
 
+func (s *ApiServer) InitRoutes() *mux.Router {
+	router := mux.NewRouter()
+	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
+	router.HandleFunc("/games/{id}", makeHTTPHandleFunc(s.handleGames))
+	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", s.fs))
+
+	router.HandleFunc("/eberstadt/event", makeHTTPHandleFunc(s.handleEberstadtEvent))
+	return router
+}
+
 func WriteJson(w http.ResponseWriter, status int, v any) error {
 	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "application/json")
@@ -113,6 +123,18 @@ func (s *ApiServer) handleStuffedSerpent(w http.ResponseWriter, r *http.Request)
 	switch r.Method {
 	case "GET":
 		component := components.StuffedSerpent()
+		handler := templ.Handler(component)
+		handler.ServeHTTP(w, r)
+		return nil
+	default:
+		return errors.New("method not allowed")
+	}
+}
+
+func (s *ApiServer) handleEberstadtEvent(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
+	case "GET":
+		component := components.Eberstadt()
 		handler := templ.Handler(component)
 		handler.ServeHTTP(w, r)
 		return nil

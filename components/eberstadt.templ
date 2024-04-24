@@ -1,0 +1,186 @@
+package components
+
+templ layoutEberstadt(name string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta http-equiv="Content-Security-Policy" content="script-src 'none'"/>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="stylesheet" href="https://unpkg.com/mvp.css"/> 
+			<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
+			<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
+			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+			<link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"/>
+			<link rel="shortcut icon" href="/assets/favicon/favicon.ico/"/>
+			<meta name="msapplication-TileColor" content="#da532c"/>
+			<meta name="msapplication-config" content="/assets/favicon/browserconfig.xml"/>
+			<meta name="theme-color" content="#ffffff"/>
+			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+			<meta name="description" content="Maintainer: S. Stockhause"/>
+			<script src="/assets/js/htmx.min.js"></script>
+
+
+			<title>{ name }</title>
+		</head>
+			@headerTemplate(name)
+		<body>
+			<main>
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+
+templ sponsors() {
+	<div>
+        <section>
+            <aside>
+                <h1>Tobias Stütz</h1>
+                <h2>Maler & Lackierer</h2>
+
+                <p>
+                    Maler & Lackarbeiten <br/>
+                    Tapezierarbeiten <br/>
+                    Farbberatung <br/>
+                    Tockenbauarbeiten <br/>
+                    uvm.
+                </p>
+
+                <a href="tel:01778733027">+49 (0)1778733027</a>
+                <a href="mailto: oldschooltobi@aol.com">oldschooltobi@aol.com</a>	
+
+            </aside>
+
+            <aside>
+                <h1>Gerrit Priester</h1>
+                <h2>SARUM Consulting</h2>
+                <p>
+                    Arbeitsschutz <br/>
+                    Rohstoffe <br/>
+                    Umwelt <br/>
+                    Management <br/>
+                </p>
+                
+                <p>M.Sc. Umwelt,- Hygiene und Sicherheitsingeniur</p>
+                <address>
+                    Butzbacher Straße 4 <br/>
+                    35423 Lich <br/>
+                </address>
+
+                <a href="tel:015221982941">+49 (0)152 219 829 41</a>
+                <a href="mailto: priester@sarum-consulting.com">priester@sarum-consulting.com</a>	
+                <a href="https://www.sarum-consulting.com">www.sarum-consulting.com</a>
+            </aside>
+
+            <aside>
+                <h1>Tobias Häberle</h1>
+                <h2>Gartenservice</h2>
+
+                <p>
+                    Baggerarbeiten <br/>
+                    Pflasterarbeiten <br/>
+                    Zaunbau <br/>
+                    Betonarbeiten <br/>
+                    uvm. <br/>
+                </p>
+
+                <address>
+                    Goethestraße 9 <br/>
+                    61200 Wölfersheim <br/>
+                </address>
+                <a href="tel:015231840291">+49 (0)1778733027</a>
+                <a href="mailto: tobias-hoeberle@web.de">tobias-hoeberle@web.de</a>	
+
+            </aside>
+
+            
+        </section>
+
+        <section>
+            <aside>
+                <h1>Dipl.-Ing Sebastian Schmidt</h1>
+                <h2>KFZ-Prüfstelle</h2>
+                <h3>LKS GmbH & Co.KG GTÜ</h3>
+
+                <p>
+                    Hauptuntersuchung <br/>
+                    Oldtimer Begutachtung <br/>
+                    Einzelabnahme <br/>
+                    Vollgutachten  <br/>
+                    Schadengutachten
+                </p>
+
+                <address>
+                    Holzheimer Straße 84 <br/>
+                    35428 Langgöns <br/>
+                </address>
+                <a href="tel:01631912457">+49 (0)1631912457</a>
+                <a href="mailto: s.schmidt@ibluk.de">s.schmidt@ibluk.de</a>	
+            </aside>
+
+            <aside>
+                <h2>LT Folienwerkstatt</h2>
+                <h3>High End Folierung</h3>
+
+                <p>
+                    Carwrappings <br/>
+                    Beschriftungen <br/>
+                    Textildruck <br/>
+                    Werbetechnik
+                </p>
+
+                <address>
+                    Im Wiesgarten 11 <br/>
+                    35423 Lich-Eberstadt <br/>
+                </address>
+                <a href="tel:01713223666">+49 (0)1713223666</a>
+                <a href="mailto: info@lt-folienwerkstatt.de">info@lt-folienwerkstatt.de</a>	
+            </aside>
+
+            <aside>
+                <h1>Frank Emmerich</h1>
+                <h2>Malerfachbetrieb</h2>
+
+                <p>
+                    Maler & Tapezierarbeiten <br/>
+                    Schimmelsanierung <br/>
+                    Kreativtechniken <br/>
+                    Bodenbeläge <br/>
+                    uvm.
+                </p>
+
+                <address>
+                    Oberhof 32<br/>
+                    35440 Linden <br/>
+                </address>
+                <a href="tel:01757767167">+49 (0)1757767167</a>
+                <a href="mailto: fm6262@web.de">fm6262@web.de</a>	
+            </aside>
+
+        </section>
+
+        <section>
+            <aside>
+                <h1>Christian Peh</h1>
+                <h2>Allround Handwerker</h2>
+
+                <address>
+                    Bleichstraße 14<br/>
+                    35423 Lich <br/>
+                </address>
+                <a href="tel:01743256167">+49 (0)1743256167</a>
+                <a href="mailto: christianpeh@outlook.de">christianpeh@outlook.de</a>	
+            </aside>
+        </section>
+        
+    </div>
+}
+
+
+templ Eberstadt() {
+	@layoutEberstadt("Eberstadt Events: Unsere Sponsoren") {
+        @sponsors()
+	}
+}

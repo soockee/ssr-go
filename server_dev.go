@@ -8,18 +8,13 @@ import (
 	"net/http"
 	"os"
 	"time"
-
-	"github.com/gorilla/mux"
 )
 
 func (s *ApiServer) Run() {
 	logger := slog.New(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug}))
 	serverLogger := slog.NewLogLogger(slog.NewJSONHandler(os.Stderr, &slog.HandlerOptions{Level: slog.LevelDebug}), slog.LevelDebug)
 
-	router := mux.NewRouter()
-	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
-	router.HandleFunc("/games/{id}", makeHTTPHandleFunc(s.handleGames))
-	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", s.fs))
+	router := s.InitRoutes()
 
 	loggingMiddleware := LoggingMiddleware(logger)
 	loggedRouter := loggingMiddleware(router)
