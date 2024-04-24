@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.0](https://github.com/soockee/ssr-go/compare/v1.2.3...v1.3.0) (2024-04-24)
+
+
+### Features
+
+* add eberstadt sponsor for QR redirect ([db6380c](https://github.com/soockee/ssr-go/commit/db6380cbed89d184096142655f982bf4244a9382))
+
+
+### Bug Fixes
+
+* update dependencies ([73db61f](https://github.com/soockee/ssr-go/commit/73db61fa439aad77bcb4aa4d014d723023319435))
+
 ## [1.2.3](https://github.com/soockee/ssr-go/compare/v1.2.2...v1.2.3) (2024-03-22)
 
 
