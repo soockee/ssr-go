@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.4.3](https://github.com/soockee/ssr-go/compare/v1.4.2...v1.4.3) (2024-08-16)
+
+
+### Bug Fixes
+
+* typo ([cdcb733](https://github.com/soockee/ssr-go/commit/cdcb733cf5ab2d399d82b3e5c353881af2187624))
+* typo ([2d9da6f](https://github.com/soockee/ssr-go/commit/2d9da6fa3afe0181b0d964645033b2f4cb9ce564))
+
 ## [1.4.2](https://github.com/soockee/ssr-go/compare/v1.4.1...v1.4.2) (2024-08-16)
 
 
