@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.1](https://github.com/soockee/ssr-go/compare/v1.4.0...v1.4.1) (2024-08-16)
+
+
+### Bug Fixes
+
+* update dependencies ([9ebc021](https://github.com/soockee/ssr-go/commit/9ebc021def6fb4fe4406f79a918887aa3e12aa78))
+
 ## [1.4.0](https://github.com/soockee/ssr-go/compare/v1.3.0...v1.4.0) (2024-08-16)
 
 
