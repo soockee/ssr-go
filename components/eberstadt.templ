@@ -18,19 +18,53 @@ templ layoutEberstadt(name string) {
 			<meta name="msapplication-config" content="/assets/favicon/browserconfig.xml"/>
 			<meta name="theme-color" content="#ffffff"/>
 			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
-			<meta name="description" content="Maintainer: S. Stockhause"/>
+			<meta name="description" content="Maintainer: Simon Stockhause"/>
 			<script src="/assets/js/htmx.min.js"></script>
 
 
 			<title>{ name }</title>
 		</head>
-			@headerTemplate(name)
 		<body>
+            @eberstadtHero()
 			<main>
 				{ children... }
 			</main>
 		</body>
 	</html>
+}
+
+templ eberstadtHero(){
+
+    <style>
+        .hero {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            background-color: #f4f4f9;
+            text-align: center;
+        }
+        .hero img {
+            border-radius: 50%;
+            width: 200px;
+            height: 200px;
+        }
+        .hero h1 {
+            margin-top: 20px;
+            font-size: 3em;
+            color: #333;
+        }
+        .hero p {
+            font-size: 1.5em;
+            color: #666;
+        }
+    </style>
+	<div class="hero">
+		<div>
+			<img src="/assets/img/logo_eberstadt.svg" alt="Eberstadt Logo"/>
+			<h1>Made with ❤️ in Eberstadt</h1>
+		</div>
+	</div>
 }
 
 templ sponsors() {
@@ -75,27 +109,16 @@ templ sponsors() {
             </aside>
 
             <aside>
-                <h1>Tobias Häberle</h1>
-                <h2>Gartenservice</h2>
+                <h1>Simon Stockhause</h1>
+                <h2>Cybersecurity Architekt / Software Engineer</h2>
 
                 <p>
-                    Baggerarbeiten <br/>
-                    Pflasterarbeiten <br/>
-                    Zaunbau <br/>
-                    Betonarbeiten <br/>
-                    uvm. <br/>
+                    Ich mach was mit IT bei der Lufthansa... keine Sorge, dein Passwort bleibt <em>unser</em> Geheimnis!
                 </p>
 
-                <address>
-                    Goethestraße 9 <br/>
-                    61200 Wölfersheim <br/>
-                </address>
-                <a href="tel:015231840291">+49 (0)1778733027</a>
-                <a href="mailto: tobias-hoeberle@web.de">tobias-hoeberle@web.de</a>	
-
+                <a href="mailto: simonstockhause@gmail.com">simonstockhause@gmail.com</a>	
+                <a href="https://stockhause.info">stockhause.info</a>
             </aside>
-
-            
         </section>
 
         <section>
@@ -121,6 +144,7 @@ templ sponsors() {
             </aside>
 
             <aside>
+                <h1>Larsen ❤️</h1>
                 <h2>LT Folienwerkstatt</h2>
                 <h3>High End Folierung</h3>
 
@@ -137,6 +161,110 @@ templ sponsors() {
                 </address>
                 <a href="tel:01713223666">+49 (0)1713223666</a>
                 <a href="mailto: info@lt-folienwerkstatt.de">info@lt-folienwerkstatt.de</a>	
+            </aside>
+
+            <aside>
+                <h1>Tobias Häberle</h1>
+                <h2>Gartenservice</h2>
+
+                <p>
+                    Baggerarbeiten <br/>
+                    Pflasterarbeiten <br/>
+                    Zaunbau <br/>
+                    Betonarbeiten <br/>
+                    uvm. <br/>
+                </p>
+
+                <address>
+                    Goethestraße 9 <br/>
+                    61200 Wölfersheim <br/>
+                </address>
+                <a href="tel:015231840291">+49 (0)1778733027</a>
+                <a href="mailto: tobias-hoeberle@web.de">tobias-hoeberle@web.de</a>	
+            </aside>
+
+        </section>
+
+        <section>
+            <aside>
+                <h1>Christian Peh</h1>
+                <h2>Allround Handwerker</h2>
+
+                <address>
+                    Bleichstraße 14<br/>
+                    35423 Lich <br/>
+                </address>
+                <a href="tel:01743256167">+49 (0)1743256167</a>
+                <a href="mailto: christianpeh@outlook.de">christianpeh@outlook.de</a>	
+            </aside>
+
+            <aside>
+                <h1>Natascha Peh</h1>
+                <h2>Beauty & Wellness Lounge</h2>
+
+                <address>
+                    Bleichstraße 28<br/>
+                    35423 Lich <br/>
+                </address>
+                <a href="tel:01726558512">+49 (0)1726558512</a>
+            </aside>
+
+            <aside>
+                <h1>Björn Höß</h1>
+                <h2>Kraft Transporte GmbH</h2>
+
+                <address>
+                    Industriestraße 20<br/>
+                    61200 Wölfersheim <br/>
+                </address>
+                <a href="tel:060363846">+49 (0)60363846</a>
+            </aside>
+        </section>
+
+        <section>
+            <aside>
+                <h1>Cathrin Lauria</h1>
+                <h2>Flusspflege Praxis</h2>
+
+                <address>
+                    Bleichstraße 28<br/>
+                    35423 Lich <br/>
+                </address>
+                <a href="tel:06004739975">+49 (0)6004739975</a>
+            </aside>
+
+            <aside>
+                <h1>Domenico Lauria</h1>
+                <h2>EBL Energiebörse</h2>
+
+                <address>
+                    Im Wiesgarten 11<br/>
+                    35423 Lich <br/>
+                </address>
+                <a href="tel:015253866927">+49 (0)15253866927</a>
+            </aside>
+
+            <aside>
+                <h1>Andrea Pander</h1>
+                <h2>Raumgestaltung Innen & Außen</h2>
+
+                <address>
+                    Strackgasse 7<br/>
+                    61440 Oberursel <br/>
+                </address>
+                <a href="tel:015233818884">+49 (0)15233818884</a>
+                <a href="mailto: info@raumtracht-ap.de">info@raumtracht-ap.de</a>	
+                <a href="https://raumtracht-ap.de">raumtracht-ap.de</a> 
+            </aside>
+        </section>
+
+        <section>
+            <aside>
+                <h1>Duchenne Höß</h1>
+                <h2>Zürich Regionalmanagering Sach</h2>
+
+                <a href="tel:015159911936">+49 (0)15159911936</a>
+                <a href="mailto: duchenne.hoess@zurich.com">duchenne.hoess@zurich.com</a>	
             </aside>
 
             <aside>
@@ -158,29 +286,17 @@ templ sponsors() {
                 <a href="tel:01757767167">+49 (0)1757767167</a>
                 <a href="mailto: fm6262@web.de">fm6262@web.de</a>	
             </aside>
-
         </section>
-
-        <section>
-            <aside>
-                <h1>Christian Peh</h1>
-                <h2>Allround Handwerker</h2>
-
-                <address>
-                    Bleichstraße 14<br/>
-                    35423 Lich <br/>
-                </address>
-                <a href="tel:01743256167">+49 (0)1743256167</a>
-                <a href="mailto: christianpeh@outlook.de">christianpeh@outlook.de</a>	
-            </aside>
-        </section>
-        
     </div>
 }
 
 
 templ Eberstadt() {
-	@layoutEberstadt("Eberstadt Events: Unsere Sponsoren") {
+	@layoutEberstadt("Eberstadt Kirmes") {
         @sponsors()
+        @navTemplate([]struct{Name, URL string}{
+            {"Home", "/"},
+            {"Eberstadt Kirmes", "/eberstadt/event"},
+        })
 	}
 }

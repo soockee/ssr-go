@@ -9,15 +9,69 @@ templ headerTemplate(name string) {
 	</header>
 }
 
-templ navTemplate() {
+templ navTemplate(links []struct{Name, URL string}) {
 	<nav>
 		<ul>
-			<li><a href="/">Home</a></li>
-			<li><a href="/games/stuffedserpent">Stuffed Serpent</a></li>
-			<li><a href="/games/snake">Snake</a></li>
-			<li><a href="/games/tictacgoe">TicTacGoe</a></li>
+			for _, link := range links {
+				<li><a href={ templ.URL(link.URL) }>{ link.Name }</a></li>
+			}
 		</ul>
 	</nav>
+
+	<style>
+		nav {
+			display: flex;
+			justify-content: center; /* Centers the navigation */
+			align-items: center;
+			height: 100px;
+			background-color: #333; /* Dark background for contrast */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for a 3D effect */
+		}
+		ul {
+			list-style: none;
+			padding: 0;
+			margin: 0;
+			display: flex;
+			gap: 30px; /* Spacing between links */
+		}
+		li {
+			display: inline;
+		}
+		a {
+			text-decoration: none;
+			color: #fff; /* White text */
+			font-weight: bold;
+			font-size: 1.2em;
+			padding: 10px 20px;
+			border-radius: 5px; /* Rounded corners */
+			transition: all 0.3s ease; /* Smooth transition effect */
+			position: relative;
+			overflow: hidden;
+		}
+		a::before {
+			content: "";
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: rgba(255, 255, 255, 0.2); /* Light overlay */
+			transform: scaleX(0);
+			transform-origin: right;
+			transition: transform 0.3s ease;
+			z-index: 0;
+		}
+		a:hover::before {
+			transform: scaleX(1); /* Expands on hover */
+			transform-origin: left;
+		}
+		a:hover {
+			background-color: #fff; /* Changes background color */
+			color: #333; /* Text color switch */
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Adds shadow for depth */
+			cursor: pointer; /* Change cursor on hover */
+		}
+	</style>
 }
 
 templ footerTemplate() {
@@ -52,7 +106,13 @@ templ layout(name string) {
 		</head>
 			@headerTemplate(name)
 		<body>
-			@navTemplate()
+			@navTemplate([]struct{Name, URL string}{
+				{"Home", "/"},
+				{"Eberstadt Kirmes", "/eberstadt/event"},
+				{"Stuffed Serpent", "/games/stuffedserpent"},
+				{"Snake", "/games/snake"},
+				{"TicTacGoe",  "/games/tictacgoe"},
+			})
 			@runningTemplate()
 			<main>
 				{ children... }
@@ -64,6 +124,9 @@ templ layout(name string) {
 
 templ Home() {
 	@layout("Home") {
+		<h1>Hier gibts nur ne Kollektion von Spielen die ich programmiert habe.</h1>
+		<h2>Außerdem allerlei anderer Krims Krams der so ensteht.</h2>
+
 		<div>Work in progress.</div>
 	}
 }
