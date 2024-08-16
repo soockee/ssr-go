@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.4.0](https://github.com/soockee/ssr-go/compare/v1.3.0...v1.4.0) (2024-08-16)
+
+
+### Features
+
+* add kirmes items, update nav ([0d4bb94](https://github.com/soockee/ssr-go/commit/0d4bb9460bb1350c701ded142f9df912a6700de9))
+
 ## [1.3.0](https://github.com/soockee/ssr-go/compare/v1.2.3...v1.3.0) (2024-04-24)
 
 
