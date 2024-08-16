@@ -3,7 +3,7 @@ module github.com/soockee/ssr-go
 go 1.21.6
 
 require (
-	github.com/a-h/templ v0.2.663
+	github.com/a-h/templ v0.2.747
 	golang.org/x/crypto v0.22.0
 )
 
@@ -19,7 +19,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
-	golang.org/x/sys v0.19.0 // indirect
+	golang.org/x/sys v0.21.0 // indirect
 	modernc.org/libc v1.50.2 // indirect
 	modernc.org/mathutil v1.6.0 // indirect
 	modernc.org/memory v1.8.0 // indirect
