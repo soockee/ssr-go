@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/soockee/ssr-go/compare/v1.4.3...v1.5.0) (2024-11-30)
+
+
+### Features
+
+* remove hostwhitelist to work behind proxy ([1822b7a](https://github.com/soockee/ssr-go/commit/1822b7a3125caba0f6c00746137f04cfab1f9c38))
+
 ## [1.4.3](https://github.com/soockee/ssr-go/compare/v1.4.2...v1.4.3) (2024-08-16)
 
 
