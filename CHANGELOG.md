@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/soockee/ssr-go/compare/v1.5.0...v1.6.0) (2024-11-30)
+
+
+### Features
+
+* use http assuming proxy handling tls ([e6cced8](https://github.com/soockee/ssr-go/commit/e6cced847c9721afa3e621dd4300f9585f8fc517))
+
 ## [1.5.0](https://github.com/soockee/ssr-go/compare/v1.4.3...v1.5.0) (2024-11-30)
 
 
