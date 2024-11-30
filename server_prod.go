@@ -22,9 +22,8 @@ func (s *ApiServer) Run() {
 	loggedRouter := loggingMiddleware(router)
 
 	certManager := &autocert.Manager{
-		Prompt:     autocert.AcceptTOS,
-		HostPolicy: autocert.HostWhitelist(s.domainName),
-		Cache:      autocert.DirCache("/certs"),
+		Prompt: autocert.AcceptTOS,
+		Cache:  autocert.DirCache("/certs"),
 	}
 
 	httpsServer := &http.Server{
