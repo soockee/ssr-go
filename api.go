@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 
 	"github.com/a-h/templ"
@@ -44,15 +45,17 @@ func (s *ApiServer) InitRoutes() *mux.Router {
 }
 
 func WriteJson(w http.ResponseWriter, status int, v any) error {
-	w.WriteHeader(status)
 	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
 	return json.NewEncoder(w).Encode(v)
 }
 
 func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 	return cors(func(w http.ResponseWriter, r *http.Request) {
 		if err := f(w, r); err != nil {
-			WriteJson(w, http.StatusBadRequest, ApiError{Error: err.Error()})
+			if writeErr := WriteJson(w, http.StatusBadRequest, ApiError{Error: err.Error()}); writeErr != nil {
+				slog.Error("failed to write JSON error response", "err", writeErr)
+			}
 		}
 	})
 }
@@ -65,11 +68,10 @@ func (s *ApiServer) handleHome(w http.ResponseWriter, r *http.Request) error {
 		handler.ServeHTTP(w, r)
 		return nil
 	case "POST":
-		WriteJson(w, http.StatusNotImplemented, "")
+		return WriteJson(w, http.StatusNotImplemented, "")
 	default:
 		return errors.New("method not allowed")
 	}
-	return nil
 }
 
 func (s *ApiServer) handleGames(w http.ResponseWriter, r *http.Request) error {
@@ -90,6 +92,8 @@ func (s *ApiServer) handleGetGames(w http.ResponseWriter, r *http.Request) error
 		return s.handleTicTacGoe(w, r)
 	case "stuffedserpent":
 		return s.handleStuffedSerpent(w, r)
+	case "pong":
+		return s.handlePong(w, r)
 	default:
 		return errors.New("method not allowed")
 	}
@@ -123,6 +127,18 @@ func (s *ApiServer) handleStuffedSerpent(w http.ResponseWriter, r *http.Request)
 	switch r.Method {
 	case "GET":
 		component := components.StuffedSerpent()
+		handler := templ.Handler(component)
+		handler.ServeHTTP(w, r)
+		return nil
+	default:
+		return errors.New("method not allowed")
+	}
+}
+
+func (s *ApiServer) handlePong(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
+	case "GET":
+		component := components.Pong()
 		handler := templ.Handler(component)
 		handler.ServeHTTP(w, r)
 		return nil

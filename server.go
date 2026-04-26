@@ -1,6 +1,3 @@
-//go:build prod
-// +build prod
-
 package main
 
 import (
@@ -29,7 +26,7 @@ func (s *ApiServer) Run() {
 	}
 
 	if err := httpServer.ListenAndServe(); err != nil {
-		logger.Error("Failed to start HTTP server", err)
+		logger.Error("Failed to start HTTP server", "err", err)
 		os.Exit(1)
 	}
 }
