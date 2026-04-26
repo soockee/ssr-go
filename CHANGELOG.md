@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.7.0](https://github.com/soockee/ssr-go/compare/v1.6.0...v1.7.0) (2026-04-26)
+
+
+### Features
+
+* add pong game route and WASM binary ([2ba3132](https://github.com/soockee/ssr-go/commit/2ba313225a8c6c6585f5bba38bb1c3fcad5ce3aa))
+* apply terminal CLI design system to all pages ([801d619](https://github.com/soockee/ssr-go/commit/801d6192cf16731e2167fc453b7a529ebd2cb3a3))
+
+
+### Bug Fixes
+
+* migrate release-please-action from google-github-actions to googleapis ([3603abf](https://github.com/soockee/ssr-go/commit/3603abf6a3ec5eed66f6c42dbb9e52630132eee6))
+
 ## [1.6.0](https://github.com/soockee/ssr-go/compare/v1.5.0...v1.6.0) (2024-11-30)
 
 
