@@ -3,19 +3,27 @@ FROM golang:latest AS builder
 
 WORKDIR /app
 
-# Copy the Go project files
-COPY . .
+# Cache Go module downloads
+COPY go.mod go.sum ./
+RUN go mod download
 
-# Download Tailwind CSS standalone CLI and build CSS
+# Install tools (cached unless Go version changes)
+RUN go install github.com/a-h/templ/cmd/templ@latest
+
+# Download Tailwind CSS standalone CLI
 RUN ARCH=$(dpkg --print-architecture) && \
     if [ "$ARCH" = "arm64" ]; then TW_ARCH="linux-arm64"; else TW_ARCH="linux-x64"; fi && \
     curl -sL "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-${TW_ARCH}" -o /usr/local/bin/tailwindcss && \
-    chmod +x /usr/local/bin/tailwindcss && \
+    chmod +x /usr/local/bin/tailwindcss
+
+# Copy source (cache busted only when code changes)
+COPY . .
+
+# Generate templ and build CSS
+RUN templ generate && \
     tailwindcss -i assets/css/input.css -o assets/css/output.css --minify
 
-RUN go install github.com/a-h/templ/cmd/templ@latest && templ generate
-
-# Build the Go binary for the desired architecture (amd64 in this case)
+# Build the Go binary
 RUN CGO_ENABLED=0 go build -o myapp
 
 
