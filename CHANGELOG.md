@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.2](https://github.com/soockee/ssr-go/compare/v1.7.1...v1.7.2) (2026-04-26)
+
+
+### Bug Fixes
+
+* add asset build artifacts to container ([52c4613](https://github.com/soockee/ssr-go/commit/52c4613ee3351372608a6c1c00357610e700a052))
+
 ## [1.7.1](https://github.com/soockee/ssr-go/compare/v1.7.0...v1.7.1) (2026-04-26)
 
 
