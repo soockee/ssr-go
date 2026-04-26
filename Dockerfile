@@ -35,7 +35,7 @@ WORKDIR /app
 
 # Copy only the binary from the previous stage
 COPY --from=builder /app/myapp .
-COPY ./assets ./assets
+COPY --from=builder /app/assets ./assets
 
 # Expose the port that your application listens on
 EXPOSE 443
