@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/soockee/ssr-go/compare/v1.7.0...v1.7.1) (2026-04-26)
+
+
+### Bug Fixes
+
+* **docker:** install mime-support for CSS assets ([0a6a776](https://github.com/soockee/ssr-go/commit/0a6a776d451968bcb9c75eadd25bb04b55feaf82))
+
 ## [1.7.0](https://github.com/soockee/ssr-go/compare/v1.6.0...v1.7.0) (2026-04-26)
 
 
