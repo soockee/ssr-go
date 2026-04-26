@@ -3,80 +3,50 @@ package components
 import "fmt"
 import "time"
 
-templ headerTemplate(name string) {
-	<header>
-		<h1>{ name }</h1>
-	</header>
+templ asciiLogo() {
+	<div class="border border-muted my-6 mx-4">
+		<div class="border-b border-muted px-4 py-1 text-muted text-sm flex justify-between">
+			<span>~/stockhause.info</span>
+			<span>[&minus; &square; &times;]</span>
+		</div>
+		<div class="px-6 py-6 text-center">
+			<h1 class="text-primary text-glow text-4xl sm:text-5xl md:text-6xl tracking-widest uppercase">
+				Simon Stockhause
+			</h1>
+			<div class="text-muted text-sm mt-3 tracking-wider">
+				&gt; SOFTWARE ENGINEER &amp; GAME DEV
+			</div>
+			<div class="flex justify-center gap-4 mt-4 text-xs text-muted">
+				<span>[<span class="text-primary">&#9679;</span> ONLINE]</span>
+				<span>[v1.0.0]</span>
+				<span>[GO+WASM]</span>
+			</div>
+		</div>
+	</div>
 }
 
-templ navTemplate(links []struct{Name, URL string}) {
-	<nav>
-		<ul>
+templ navTemplate(links []struct{ Name, URL string }) {
+	<nav class="border-b border-muted py-3 px-4 fixed top-0 left-0 right-0 z-[9999] bg-bg">
+		<div class="max-w-5xl mx-auto flex flex-wrap items-center gap-x-2 gap-y-2">
+			<span class="text-muted mr-2 hidden sm:inline">visitor@stockhause:~$</span>
 			for _, link := range links {
-				<li><a href={ templ.URL(link.URL) }>{ link.Name }</a></li>
+				<a
+					href={ templ.URL(link.URL) }
+					class="terminal-btn text-sm py-1 px-3"
+				>[ { link.Name } ]</a>
 			}
-		</ul>
+		</div>
 	</nav>
-
-	<style>
-		nav {
-			display: flex;
-			justify-content: center; /* Centers the navigation */
-			align-items: center;
-			height: 100px;
-			background-color: #333; /* Dark background for contrast */
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slight shadow for a 3D effect */
-		}
-		ul {
-			list-style: none;
-			padding: 0;
-			margin: 0;
-			display: flex;
-			gap: 30px; /* Spacing between links */
-		}
-		li {
-			display: inline;
-		}
-		a {
-			text-decoration: none;
-			color: #fff; /* White text */
-			font-weight: bold;
-			font-size: 1.2em;
-			padding: 10px 20px;
-			border-radius: 5px; /* Rounded corners */
-			transition: all 0.3s ease; /* Smooth transition effect */
-			position: relative;
-			overflow: hidden;
-		}
-		a::before {
-			content: "";
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(255, 255, 255, 0.2); /* Light overlay */
-			transform: scaleX(0);
-			transform-origin: right;
-			transition: transform 0.3s ease;
-			z-index: 0;
-		}
-		a:hover::before {
-			transform: scaleX(1); /* Expands on hover */
-			transform-origin: left;
-		}
-		a:hover {
-			background-color: #fff; /* Changes background color */
-			color: #333; /* Text color switch */
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Adds shadow for depth */
-			cursor: pointer; /* Change cursor on hover */
-		}
-	</style>
 }
 
 templ footerTemplate() {
-	<footer>
-		<div>&copy; { fmt.Sprintf("%d", time.Now().Year()) }</div>
+	<footer class="border-t border-muted mt-8 py-4 px-4">
+		<div class="flex flex-wrap justify-between items-center gap-4 text-muted text-sm">
+			<span>[SESSION] visitor</span>
+			<span>[UPTIME] &copy; { fmt.Sprintf("%d", time.Now().Year()) }</span>
+			<span>[HOST] stockhause.info</span>
+			<span class="text-primary text-glow">[STATUS] OK</span>
+		</div>
 	</footer>
 }
 
@@ -84,49 +54,178 @@ templ layout(name string) {
 	<!doctype html>
 	<html lang="en">
 		<head>
-			<meta http-equiv="Content-Security-Policy" content="script-src 'none'"/>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-			<link rel="stylesheet" href="https://unpkg.com/mvp.css"/> 
+			<meta http-equiv="Content-Security-Policy" content="script-src 'self'"/>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"/>
+			<link rel="stylesheet" href="/assets/css/output.css"/>
 			<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
 			<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
 			<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
 			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
-			<link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5"/>
+			<link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#33ff00"/>
 			<link rel="shortcut icon" href="/assets/favicon/favicon.ico/"/>
-			<meta name="msapplication-TileColor" content="#da532c"/>
-			<meta name="msapplication-config" content="/assets/favicon/browserconfig.xml"/>
-			<meta name="theme-color" content="#ffffff"/>
-			<link rel="manifest" href="/assets/favicon/site.webmanifest"/>
+			<meta name="msapplication-TileColor" content="#0a0a0a"/>
+			<meta name="theme-color" content="#0a0a0a"/>
 			<meta name="description" content="Maintainer: S. Stockhause"/>
 			<script src="/assets/js/htmx.min.js"></script>
-
-
-			<title>{ name }</title>
+			<title>{ name } | STOCKHAUSE</title>
 		</head>
-			@headerTemplate(name)
-		<body>
-			@navTemplate([]struct{Name, URL string}{
-				{"Home", "/"},
-				{"Eberstadt Kirmes", "/eberstadt/event"},
-				{"Stuffed Serpent", "/games/stuffedserpent"},
-				{"Snake", "/games/snake"},
-				{"TicTacGoe",  "/games/tictacgoe"},
-			})
-			@runningTemplate()
-			<main>
-				{ children... }
-			</main>
+		<body class="font-mono min-h-screen bg-bg text-primary pt-12">
+			<!-- CRT scanline overlay -->
+			<div class="crt-scanlines"></div>
+			<div class="max-w-5xl mx-auto">
+				@asciiLogo()
+				@navTemplate([]struct{ Name, URL string }{
+					{"Home", "/"},
+					{"Snake", "/games/snake"},
+					{"Pong", "/games/pong"},
+					{"TicTacGoe", "/games/tictacgoe"},
+					{"Stuffed Serpent", "/games/stuffedserpent"},
+					{"Eberstadt", "/eberstadt/event"},
+				})
+				<main class="p-4 md:p-8">
+					{ children... }
+				</main>
+				@footerTemplate()
+			</div>
 		</body>
-		@footerTemplate()
+	</html>
+}
+
+script loadGame(wasmFile string) {
+	const origin = window.location.origin;
+	fetch(origin + "/assets/js/wasm_exec.js")
+		.then(function (response) { return response.text(); })
+		.then(function (scriptContent) {
+			eval(scriptContent);
+			if (WebAssembly) {
+				if (!WebAssembly.instantiateStreaming) {
+					WebAssembly.instantiateStreaming = async function (resp, importObject) {
+						const source = await (await resp).arrayBuffer();
+						return await WebAssembly.instantiate(source, importObject);
+					};
+				}
+				const go = new Go();
+				WebAssembly.instantiateStreaming(
+					fetch(origin + "/assets/games/" + wasmFile),
+					go.importObject
+				).then(function (result) {
+					go.run(result.instance);
+				});
+			}
+		})
+		.catch(function (error) { console.error("WASM load error:", error); });
+}
+
+templ gameLayout(name string, wasmFile string) {
+	<!doctype html>
+	<html lang="en">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			<link rel="preconnect" href="https://fonts.googleapis.com"/>
+			<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+			<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet"/>
+			<link rel="stylesheet" href="/assets/css/output.css"/>
+			<link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
+			<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
+			<title>{ name } | STOCKHAUSE</title>
+			@loadGame(wasmFile)
+		</head>
+		<body class="font-mono min-h-screen bg-bg text-primary pt-12">
+			<div class="crt-scanlines"></div>
+			<div class="max-w-5xl mx-auto">
+				@navTemplate([]struct{ Name, URL string }{
+					{"Home", "/"},
+					{"Snake", "/games/snake"},
+					{"Pong", "/games/pong"},
+					{"TicTacGoe", "/games/tictacgoe"},
+					{"Stuffed Serpent", "/games/stuffedserpent"},
+					{"Eberstadt", "/eberstadt/event"},
+				})
+				<div class="p-4">
+					<!-- Breadcrumb -->
+					<div class="mb-6">
+						<a href="/" class="text-muted hover:text-primary">$ cd ~</a>
+						<span class="text-muted"> / </span>
+						<span class="text-secondary text-glow-amber">{ name }</span>
+					</div>
+					<!-- Game window -->
+					<div class="terminal-window">
+						<div class="terminal-titlebar">
+							+--- { name } ---+
+						</div>
+						<div class="terminal-body flex justify-center items-center min-h-[400px] relative overflow-hidden">
+							<main id="wasm" tabindex="0" autofocus class="wasm-container"></main>
+						</div>
+					</div>
+					<!-- Controls -->
+					<div class="mt-6 flex justify-between items-center text-sm">
+						<span class="text-muted">[CTRL+C to exit]</span>
+						<a href="/" class="terminal-btn py-1 px-3 text-sm">[ BACK ]</a>
+					</div>
+				</div>
+			</div>
+		</body>
 	</html>
 }
 
 templ Home() {
 	@layout("Home") {
-		<h1>Hier gibts nur ne Kollektion von Spielen die ich programmiert habe.</h1>
-		<h2>Außerdem allerlei anderer Krims Krams der so ensteht.</h2>
-
-		<div>Work in progress.</div>
+		<div class="space-y-8">
+			<!-- Hero / System Message -->
+			<div class="terminal-window">
+				<div class="terminal-titlebar">
+					+--- SYSTEM MESSAGE ---+
+				</div>
+				<div class="terminal-body space-y-3">
+					<p class="text-secondary text-glow-amber text-2xl">
+						&gt; A collection of games I programmed.
+					</p>
+					<p class="text-lg">
+						&gt; Plus all sorts of other stuff that comes up.
+					</p>
+					<p class="text-muted mt-4">
+						[STATUS: WORK IN PROGRESS]
+					</p>
+				</div>
+			</div>
+			<!-- Games directory listing -->
+			<div class="terminal-window">
+				<div class="terminal-titlebar">
+					+--- /home/visitor/games/ ---+
+				</div>
+				<div class="terminal-body">
+					<p class="text-muted mb-4">visitor@stockhause:~/games$ ls -la</p>
+					<div class="space-y-1">
+						<a href="/games/snake" class="dir-entry">
+							<span class="text-muted">drwxr-xr-x</span>
+							<span class="ml-4 text-glow">&gt; SNAKE</span>
+							<span class="text-muted ml-4 hidden sm:inline"># Classic snake game in Go+WASM</span>
+						</a>
+						<a href="/games/pong" class="dir-entry">
+							<span class="text-muted">drwxr-xr-x</span>
+							<span class="ml-4 text-glow">&gt; PONG</span>
+							<span class="text-muted ml-4 hidden sm:inline"># Retro pong in Go+WASM</span>
+						</a>
+						<a href="/games/tictacgoe" class="dir-entry">
+							<span class="text-muted">drwxr-xr-x</span>
+							<span class="ml-4 text-glow">&gt; TICTACGOE</span>
+							<span class="text-muted ml-4 hidden sm:inline"># Tic-tac-toe in Go+WASM</span>
+						</a>
+						<a href="/games/stuffedserpent" class="dir-entry">
+							<span class="text-muted">drwxr-xr-x</span>
+							<span class="ml-4 text-glow">&gt; STUFFED SERPENT</span>
+							<span class="text-muted ml-4 hidden sm:inline"># Enhanced snake with LDtk</span>
+						</a>
+					</div>
+					<p class="text-muted mt-4">4 entries found. <span class="cursor-blink"></span></p>
+				</div>
+			</div>
+		</div>
 	}
 }
