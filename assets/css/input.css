@@ -1,0 +1,230 @@
+@import "tailwindcss";
+
+@source "../../components";
+
+/* ============================================
+   TERMINAL CLI DESIGN SYSTEM — TOKEN LAYER
+   ============================================ */
+
+@theme {
+  /* Phosphor monitor palette */
+  --color-bg: #0a0a0a;
+  --color-surface: #111111;
+  --color-primary: #33ff00;
+  --color-secondary: #ffb000;
+  --color-muted: #1f521f;
+  --color-error: #ff3333;
+
+  /* Monospace supremacy */
+  --font-mono: "VT323", monospace;
+
+  /* Animations */
+  --animate-blink: blink 1s step-end infinite;
+}
+
+/* ============================================
+   KEYFRAMES
+   ============================================ */
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes typing {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--color-primary);
+  }
+}
+
+/* ============================================
+   BASE — The foundation of the CRT
+   ============================================ */
+
+@layer base {
+  * {
+    border-radius: 0 !important;
+  }
+
+  html,
+  body {
+    font-family: var(--font-mono);
+    background-color: var(--color-bg);
+    color: var(--color-primary);
+    line-height: 1.6;
+    font-size: 20px;
+  }
+
+  ::selection {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: all 0.08s ease;
+  }
+
+  a:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+}
+
+/* ============================================
+   COMPONENT CLASSES
+   ============================================ */
+
+@layer components {
+  /* --- Phosphor glow effects --- */
+  .text-glow {
+    text-shadow: 0 0 5px rgba(51, 255, 0, 0.5);
+  }
+
+  .text-glow-amber {
+    text-shadow: 0 0 5px rgba(255, 176, 0, 0.5);
+  }
+
+  /* --- CRT scanline overlay --- */
+  .crt-scanlines {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9998;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.12) 0px,
+      rgba(0, 0, 0, 0.12) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+  }
+
+  /* Constrain WASM game canvas inside its container */
+  .wasm-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .wasm-container canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+  }
+
+  /* --- Typing / cursor effects --- */
+  .typing-line {
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 0.15em solid var(--color-primary);
+    display: inline-block;
+    max-width: 0;
+    animation: typing 2s steps(30, end) 0.5s forwards,
+      blink-caret 0.75s step-end infinite;
+  }
+
+  .cursor-blink::after {
+    content: "█";
+    animation: blink 1s step-end infinite;
+  }
+
+  /* --- Terminal window (card/pane) --- */
+  .terminal-window {
+    border: 1px solid var(--color-muted);
+    background-color: var(--color-bg);
+  }
+
+  .terminal-titlebar {
+    border-bottom: 1px solid var(--color-muted);
+    padding: 6px 16px;
+    background-color: var(--color-surface);
+    color: var(--color-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 16px;
+  }
+
+  .terminal-body {
+    padding: 20px;
+  }
+
+  /* --- Buttons  [ ACTION ] --- */
+  .terminal-btn {
+    display: inline-block;
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary);
+    padding: 6px 16px;
+    font-family: var(--font-mono);
+    font-size: 20px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.08s ease;
+    background: transparent;
+  }
+
+  .terminal-btn:hover {
+    background-color: var(--color-primary);
+    color: var(--color-bg);
+  }
+
+  /* --- Separator --- */
+  .separator {
+    border: none;
+    border-top: 1px dashed var(--color-muted);
+    margin: 16px 0;
+  }
+
+  /* --- Directory listing item --- */
+  .dir-entry {
+    display: block;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    transition: border-color 0.08s ease;
+  }
+
+  .dir-entry:hover {
+    border-color: var(--color-primary);
+    background-color: transparent;
+    color: var(--color-primary);
+  }
+
+  /* --- Sponsor card (Eberstadt) --- */
+  .sponsor-card {
+    border: 1px solid var(--color-muted);
+    background-color: var(--color-bg);
+  }
+
+  .sponsor-card a {
+    display: block;
+    padding: 2px 0;
+    color: var(--color-secondary);
+    transition: all 0.08s ease;
+  }
+
+  .sponsor-card a:hover {
+    background-color: var(--color-secondary);
+    color: var(--color-bg);
+  }
+}

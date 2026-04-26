@@ -2,3 +2,6 @@ go.work
 go.work.sum
 *_templ.go
 *_templ.txt
+/main
+/tailwindcss
+assets/css/output.css
