@@ -6,11 +6,17 @@ WORKDIR /app
 # Copy the Go project files
 COPY . .
 
+# Download Tailwind CSS standalone CLI and build CSS
+RUN ARCH=$(dpkg --print-architecture) && \
+    if [ "$ARCH" = "arm64" ]; then TW_ARCH="linux-arm64"; else TW_ARCH="linux-x64"; fi && \
+    curl -sL "https://github.com/tailwindlabs/tailwindcss/releases/latest/download/tailwindcss-${TW_ARCH}" -o /usr/local/bin/tailwindcss && \
+    chmod +x /usr/local/bin/tailwindcss && \
+    tailwindcss -i assets/css/input.css -o assets/css/output.css --minify
 
 RUN go install github.com/a-h/templ/cmd/templ@latest && templ generate
 
 # Build the Go binary for the desired architecture (amd64 in this case)
-RUN CGO_ENABLED=0 go build -o myapp -tags prod
+RUN CGO_ENABLED=0 go build -o myapp
 
 
 # Stage 2: Create a minimal production image
