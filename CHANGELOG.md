@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.8.0](https://github.com/soockee/ssr-go/compare/v1.7.2...v1.8.0) (2026-04-27)
+
+
+### Features
+
+* fetch games on start ([08a9b17](https://github.com/soockee/ssr-go/commit/08a9b1767eb9d3cf0758910ad3ed0cdd70edba50))
+
+
+### Bug Fixes
+
+* remove unused running.templ ([d4523d4](https://github.com/soockee/ssr-go/commit/d4523d4e316bb754b7fb443d9ed4f2f3ffce5fbb))
+
 ## [1.7.2](https://github.com/soockee/ssr-go/compare/v1.7.1...v1.7.2) (2026-04-26)
 
 
