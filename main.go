@@ -15,6 +15,11 @@ func main() {
 
 	fs := http.FileServer(http.Dir("./assets"))
 
-	server := NewApiServer(store, fs)
+	gameProxy := NewGameProxy("soockee", "terminal-games", "./cache/games")
+	if err := gameProxy.FetchLatestReleases(); err != nil {
+		slog.Warn("Could not fetch game binaries from GitHub, serving from cache if available", "err", err)
+	}
+
+	server := NewApiServer(store, fs, gameProxy)
 	server.Run()
 }

@@ -5,3 +5,4 @@ go.work.sum
 /main
 /tailwindcss
 assets/css/output.css
+/cache/

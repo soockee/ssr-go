@@ -21,13 +21,15 @@ type ApiError struct {
 type ApiServer struct {
 	store      Storage
 	fs         http.Handler
+	gameProxy  *GameProxy
 	domainName string
 }
 
-func NewApiServer(store Storage, fs http.Handler) *ApiServer {
+func NewApiServer(store Storage, fs http.Handler, gameProxy *GameProxy) *ApiServer {
 	server := &ApiServer{
-		store: store,
-		fs:    fs,
+		store:     store,
+		fs:        fs,
+		gameProxy: gameProxy,
 	}
 
 	server.domainName = "stockhause.info"
@@ -38,6 +40,7 @@ func (s *ApiServer) InitRoutes() *mux.Router {
 	router := mux.NewRouter()
 	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
 	router.HandleFunc("/games/{id}", makeHTTPHandleFunc(s.handleGames))
+	router.PathPrefix("/assets/games/").Handler(http.StripPrefix("/assets/games/", s.gameProxy))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", s.fs))
 
 	router.HandleFunc("/eberstadt/event", makeHTTPHandleFunc(s.handleEberstadtEvent))
@@ -63,7 +66,7 @@ func makeHTTPHandleFunc(f apiFunc) http.HandlerFunc {
 func (s *ApiServer) handleHome(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case "GET":
-		component := components.Home()
+		component := components.Home(s.gameProxy.Games())
 		handler := templ.Handler(component)
 		handler.ServeHTTP(w, r)
 		return nil
@@ -84,67 +87,16 @@ func (s *ApiServer) handleGames(w http.ResponseWriter, r *http.Request) error {
 }
 
 func (s *ApiServer) handleGetGames(w http.ResponseWriter, r *http.Request) error {
-	idStr := mux.Vars(r)["id"]
-	switch idStr {
-	case "snake":
-		return s.handleSnake(w, r)
-	case "tictacgoe":
-		return s.handleTicTacGoe(w, r)
-	case "stuffedserpent":
-		return s.handleStuffedSerpent(w, r)
-	case "pong":
-		return s.handlePong(w, r)
-	default:
-		return errors.New("method not allowed")
+	slug := mux.Vars(r)["id"]
+	game, ok := s.gameProxy.HasGame(slug)
+	if !ok {
+		return errors.New("game not found")
 	}
-}
 
-func (s *ApiServer) handleSnake(w http.ResponseWriter, r *http.Request) error {
-	switch r.Method {
-	case "GET":
-		component := components.Snake()
-		handler := templ.Handler(component)
-		handler.ServeHTTP(w, r)
-		return nil
-	default:
-		return errors.New("method not allowed")
-	}
-}
-
-func (s *ApiServer) handleTicTacGoe(w http.ResponseWriter, r *http.Request) error {
-	switch r.Method {
-	case "GET":
-		component := components.TicTacGoe()
-		handler := templ.Handler(component)
-		handler.ServeHTTP(w, r)
-		return nil
-	default:
-		return errors.New("method not allowed")
-	}
-}
-
-func (s *ApiServer) handleStuffedSerpent(w http.ResponseWriter, r *http.Request) error {
-	switch r.Method {
-	case "GET":
-		component := components.StuffedSerpent()
-		handler := templ.Handler(component)
-		handler.ServeHTTP(w, r)
-		return nil
-	default:
-		return errors.New("method not allowed")
-	}
-}
-
-func (s *ApiServer) handlePong(w http.ResponseWriter, r *http.Request) error {
-	switch r.Method {
-	case "GET":
-		component := components.Pong()
-		handler := templ.Handler(component)
-		handler.ServeHTTP(w, r)
-		return nil
-	default:
-		return errors.New("method not allowed")
-	}
+	component := components.GameLayout(game.Name, game.WasmFile, s.gameProxy.Games())
+	handler := templ.Handler(component)
+	handler.ServeHTTP(w, r)
+	return nil
 }
 
 func (s *ApiServer) handleEberstadtEvent(w http.ResponseWriter, r *http.Request) error {

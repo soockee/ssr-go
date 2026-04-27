@@ -2,6 +2,7 @@ package components
 
 import "fmt"
 import "time"
+import "github.com/soockee/ssr-go/model"
 
 templ asciiLogo() {
 	<div class="border border-muted my-6 mx-4">
@@ -50,7 +51,7 @@ templ footerTemplate() {
 	</footer>
 }
 
-templ layout(name string) {
+templ layout(name string, games []model.GameEntry) {
 	<!doctype html>
 	<html lang="en">
 		<head>
@@ -78,14 +79,7 @@ templ layout(name string) {
 			<div class="crt-scanlines"></div>
 			<div class="max-w-5xl mx-auto">
 				@asciiLogo()
-				@navTemplate([]struct{ Name, URL string }{
-					{"Home", "/"},
-					{"Snake", "/games/snake"},
-					{"Pong", "/games/pong"},
-					{"TicTacGoe", "/games/tictacgoe"},
-					{"Stuffed Serpent", "/games/stuffedserpent"},
-					{"Eberstadt", "/eberstadt/event"},
-				})
+				@navTemplate(model.NavLinks(games))
 				<main class="p-4 md:p-8">
 					{ children... }
 				</main>
@@ -120,7 +114,7 @@ script loadGame(wasmFile string) {
 		.catch(function (error) { console.error("WASM load error:", error); });
 }
 
-templ gameLayout(name string, wasmFile string) {
+templ GameLayout(name string, wasmFile string, games []model.GameEntry) {
 	<!doctype html>
 	<html lang="en">
 		<head>
@@ -139,14 +133,7 @@ templ gameLayout(name string, wasmFile string) {
 		<body class="font-mono min-h-screen bg-bg text-primary pt-12">
 			<div class="crt-scanlines"></div>
 			<div class="max-w-5xl mx-auto">
-				@navTemplate([]struct{ Name, URL string }{
-					{"Home", "/"},
-					{"Snake", "/games/snake"},
-					{"Pong", "/games/pong"},
-					{"TicTacGoe", "/games/tictacgoe"},
-					{"Stuffed Serpent", "/games/stuffedserpent"},
-					{"Eberstadt", "/eberstadt/event"},
-				})
+				@navTemplate(model.NavLinks(games))
 				<div class="p-4">
 					<!-- Breadcrumb -->
 					<div class="mb-6">
@@ -174,8 +161,8 @@ templ gameLayout(name string, wasmFile string) {
 	</html>
 }
 
-templ Home() {
-	@layout("Home") {
+templ Home(games []model.GameEntry) {
+	@layout("Home", games) {
 		<div class="space-y-8">
 			<!-- Hero / System Message -->
 			<div class="terminal-window">
@@ -202,28 +189,15 @@ templ Home() {
 				<div class="terminal-body">
 					<p class="text-muted mb-4">visitor@stockhause:~/games$ ls -la</p>
 					<div class="space-y-1">
-						<a href="/games/snake" class="dir-entry">
-							<span class="text-muted">drwxr-xr-x</span>
-							<span class="ml-4 text-glow">&gt; SNAKE</span>
-							<span class="text-muted ml-4 hidden sm:inline"># Classic snake game in Go+WASM</span>
-						</a>
-						<a href="/games/pong" class="dir-entry">
-							<span class="text-muted">drwxr-xr-x</span>
-							<span class="ml-4 text-glow">&gt; PONG</span>
-							<span class="text-muted ml-4 hidden sm:inline"># Retro pong in Go+WASM</span>
-						</a>
-						<a href="/games/tictacgoe" class="dir-entry">
-							<span class="text-muted">drwxr-xr-x</span>
-							<span class="ml-4 text-glow">&gt; TICTACGOE</span>
-							<span class="text-muted ml-4 hidden sm:inline"># Tic-tac-toe in Go+WASM</span>
-						</a>
-						<a href="/games/stuffedserpent" class="dir-entry">
-							<span class="text-muted">drwxr-xr-x</span>
-							<span class="ml-4 text-glow">&gt; STUFFED SERPENT</span>
-							<span class="text-muted ml-4 hidden sm:inline"># Enhanced snake with LDtk</span>
-						</a>
+						for _, game := range games {
+							<a href={ templ.URL("/games/" + game.Slug) } class="dir-entry">
+								<span class="text-muted">drwxr-xr-x</span>
+								<span class="ml-4 text-glow">&gt; { game.Name }</span>
+								<span class="text-muted ml-4 hidden sm:inline"># { game.Name } in Go+WASM</span>
+							</a>
+						}
 					</div>
-					<p class="text-muted mt-4">4 entries found. <span class="cursor-blink"></span></p>
+					<p class="text-muted mt-4">{ fmt.Sprintf("%d", len(games)) } entries found. <span class="cursor-blink"></span></p>
 				</div>
 			</div>
 		</div>
