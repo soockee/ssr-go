@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/soockee/ssr-go/compare/v1.8.0...v1.8.1) (2026-04-28)
+
+
+### Bug Fixes
+
+* use bundled wasm js ([e1cb6b2](https://github.com/soockee/ssr-go/commit/e1cb6b239b695cd4ee1f86839acdc23a4fd1f92d))
+
 ## [1.8.0](https://github.com/soockee/ssr-go/compare/v1.7.2...v1.8.0) (2026-04-27)
 
 
