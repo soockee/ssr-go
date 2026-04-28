@@ -89,9 +89,12 @@ templ layout(name string, games []model.GameEntry) {
 	</html>
 }
 
-script loadGame(wasmFile string) {
+script loadGame(wasmFile string, wasmExecFile string) {
 	const origin = window.location.origin;
-	fetch(origin + "/assets/js/wasm_exec.js")
+	const execPath = wasmExecFile
+		? "/assets/games/" + wasmExecFile
+		: "/assets/js/wasm_exec.js";
+	fetch(origin + execPath)
 		.then(function (response) { return response.text(); })
 		.then(function (scriptContent) {
 			eval(scriptContent);
@@ -114,7 +117,7 @@ script loadGame(wasmFile string) {
 		.catch(function (error) { console.error("WASM load error:", error); });
 }
 
-templ GameLayout(name string, wasmFile string, games []model.GameEntry) {
+templ GameLayout(name string, wasmFile string, wasmExecFile string, games []model.GameEntry) {
 	<!doctype html>
 	<html lang="en">
 		<head>
@@ -128,7 +131,7 @@ templ GameLayout(name string, wasmFile string, games []model.GameEntry) {
 			<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png"/>
 			<link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png"/>
 			<title>{ name } | STOCKHAUSE</title>
-			@loadGame(wasmFile)
+			@loadGame(wasmFile, wasmExecFile)
 		</head>
 		<body class="font-mono min-h-screen bg-bg text-primary pt-12">
 			<div class="crt-scanlines"></div>

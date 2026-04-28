@@ -4,9 +4,10 @@ import "sort"
 
 // GameEntry represents a game discovered from GitHub releases.
 type GameEntry struct {
-	Slug     string // route slug, e.g. "pong"
-	Name     string // display name, e.g. "PONG"
-	WasmFile string // cached filename, e.g. "pong.wasm"
+	Slug         string // route slug, e.g. "pong"
+	Name         string // display name, e.g. "PONG"
+	WasmFile     string // cached filename, e.g. "pong.wasm"
+	WasmExecFile string // cached filename, e.g. "pong_wasm_exec.js" (per-game)
 }
 
 // NavLinks builds the navigation link list from the discovered games.

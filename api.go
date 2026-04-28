@@ -93,7 +93,7 @@ func (s *ApiServer) handleGetGames(w http.ResponseWriter, r *http.Request) error
 		return errors.New("game not found")
 	}
 
-	component := components.GameLayout(game.Name, game.WasmFile, s.gameProxy.Games())
+	component := components.GameLayout(game.Name, game.WasmFile, game.WasmExecFile, s.gameProxy.Games())
 	handler := templ.Handler(component)
 	handler.ServeHTTP(w, r)
 	return nil

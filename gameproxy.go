@@ -115,7 +115,7 @@ func (gp *GameProxy) FetchLatestReleases() error {
 				continue
 			}
 
-			wasmFile, err := gp.downloadAndExtract(asset)
+			wasmFile, wasmExecFile, err := gp.downloadAndExtract(slug, asset)
 			if err != nil {
 				slog.Error("Failed to download/extract asset",
 					"name", asset.Name, "err", err)
@@ -123,9 +123,10 @@ func (gp *GameProxy) FetchLatestReleases() error {
 			}
 
 			discovered[slug] = model.GameEntry{
-				Slug:     slug,
-				Name:     strings.ToUpper(slug),
-				WasmFile: wasmFile,
+				Slug:         slug,
+				Name:         strings.ToUpper(slug),
+				WasmFile:     wasmFile,
+				WasmExecFile: wasmExecFile,
 			}
 			slog.Info("Cached game",
 				"slug", slug, "wasm", wasmFile, "tag", release.TagName)
@@ -140,16 +141,20 @@ func (gp *GameProxy) FetchLatestReleases() error {
 	return nil
 }
 
-// ServeHTTP serves a cached .wasm file.
+// ServeHTTP serves a cached .wasm or _wasm_exec.js file.
 func (gp *GameProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	name := filepath.Base(r.URL.Path)
+	name = filepath.Base(filepath.Clean(name))
 
-	if !strings.HasSuffix(name, ".wasm") {
+	if strings.HasSuffix(name, ".wasm") {
+		w.Header().Set("Content-Type", "application/wasm")
+	} else if strings.HasSuffix(name, "_wasm_exec.js") {
+		w.Header().Set("Content-Type", "application/javascript")
+	} else {
 		http.NotFound(w, r)
 		return
 	}
 
-	name = filepath.Base(filepath.Clean(name))
 	path := filepath.Join(gp.cacheDir, name)
 
 	if _, err := os.Stat(path); os.IsNotExist(err) {
@@ -157,7 +162,6 @@ func (gp *GameProxy) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/wasm")
 	http.ServeFile(w, r, path)
 }
 
@@ -204,24 +208,26 @@ func gameSlugFromTag(tag string) string {
 
 const maxWasmSize = 100 * 1024 * 1024 // 100 MB
 
-func (gp *GameProxy) downloadAndExtract(asset githubAsset) (string, error) {
+func (gp *GameProxy) downloadAndExtract(slug string, asset githubAsset) (string, string, error) {
 	resp, err := gp.client.Get(asset.BrowserDownloadURL)
 	if err != nil {
-		return "", fmt.Errorf("download %s: %w", asset.Name, err)
+		return "", "", fmt.Errorf("download %s: %w", asset.Name, err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("download %s: HTTP %d", asset.Name, resp.StatusCode)
+		return "", "", fmt.Errorf("download %s: HTTP %d", asset.Name, resp.StatusCode)
 	}
 
 	gr, err := gzip.NewReader(resp.Body)
 	if err != nil {
-		return "", fmt.Errorf("gzip reader: %w", err)
+		return "", "", fmt.Errorf("gzip reader: %w", err)
 	}
 	defer gr.Close()
 
 	tr := tar.NewReader(gr)
+
+	var wasmName, wasmExecName string
 
 	for {
 		hdr, err := tr.Next()
@@ -229,41 +235,54 @@ func (gp *GameProxy) downloadAndExtract(asset githubAsset) (string, error) {
 			break
 		}
 		if err != nil {
-			return "", fmt.Errorf("tar read: %w", err)
+			return "", "", fmt.Errorf("tar read: %w", err)
 		}
 
-		if !strings.HasSuffix(hdr.Name, ".wasm") {
-			continue
-		}
+		baseName := filepath.Base(hdr.Name)
 
-		wasmName := filepath.Base(hdr.Name)
-		dest := filepath.Join(gp.cacheDir, wasmName)
-
-		// Atomic write via temp file.
-		tmp, err := os.CreateTemp(gp.cacheDir, ".extract-*")
-		if err != nil {
-			return "", err
+		if strings.HasSuffix(baseName, ".wasm") {
+			wasmName = baseName
+			if err := extractFile(tr, filepath.Join(gp.cacheDir, wasmName), maxWasmSize); err != nil {
+				return "", "", err
+			}
+		} else if baseName == "wasm_exec.js" {
+			// Save as {slug}_wasm_exec.js so each game gets its own copy.
+			wasmExecName = slug + "_wasm_exec.js"
+			if err := extractFile(tr, filepath.Join(gp.cacheDir, wasmExecName), maxWasmSize); err != nil {
+				return "", "", err
+			}
 		}
-		tmpName := tmp.Name()
-
-		limited := io.LimitReader(tr, maxWasmSize)
-		if _, err := io.Copy(tmp, limited); err != nil {
-			tmp.Close()
-			os.Remove(tmpName)
-			return "", err
-		}
-		if err := tmp.Close(); err != nil {
-			os.Remove(tmpName)
-			return "", err
-		}
-
-		if err := os.Rename(tmpName, dest); err != nil {
-			os.Remove(tmpName)
-			return "", err
-		}
-
-		return wasmName, nil
 	}
 
-	return "", fmt.Errorf("no .wasm file found in %s", asset.Name)
+	if wasmName == "" {
+		return "", "", fmt.Errorf("no .wasm file found in %s", asset.Name)
+	}
+
+	return wasmName, wasmExecName, nil
+}
+
+func extractFile(r io.Reader, dest string, limit int64) error {
+	dir := filepath.Dir(dest)
+	tmp, err := os.CreateTemp(dir, ".extract-*")
+	if err != nil {
+		return err
+	}
+	tmpName := tmp.Name()
+
+	limited := io.LimitReader(r, limit)
+	if _, err := io.Copy(tmp, limited); err != nil {
+		tmp.Close()
+		os.Remove(tmpName)
+		return err
+	}
+	if err := tmp.Close(); err != nil {
+		os.Remove(tmpName)
+		return err
+	}
+
+	if err := os.Rename(tmpName, dest); err != nil {
+		os.Remove(tmpName)
+		return err
+	}
+	return nil
 }
