@@ -11,7 +11,7 @@ import (
 
 // Defaults verify development builds. To verify linker injection, run after templ
 // generation:
-// go test -ldflags '-X main.version=v1.2.3 -X main.commit=0123456789abcdef0123456789abcdef01234567' . -args -version.expected=v1.2.3 -commit.expected=0123456789abcdef0123456789abcdef01234567
+// go test -ldflags '-X github.com/soockee/ssr-go.version=v1.2.3 -X github.com/soockee/ssr-go.commit=0123456789abcdef0123456789abcdef01234567' . -args -version.expected=v1.2.3 -commit.expected=0123456789abcdef0123456789abcdef01234567
 var (
 	expectedVersion = flag.String("version.expected", "dev", "expected binary release version")
 	expectedCommit  = flag.String("commit.expected", "unknown", "expected binary source commit")

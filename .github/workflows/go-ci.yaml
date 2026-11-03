@@ -32,7 +32,7 @@ jobs:
       - name: Test injected release metadata
         run: >-
           go test -count=1
-          -ldflags '-X main.version=v1.2.3 -X main.commit=0123456789abcdef0123456789abcdef01234567'
+          -ldflags '-X github.com/soockee/ssr-go.version=v1.2.3 -X github.com/soockee/ssr-go.commit=0123456789abcdef0123456789abcdef01234567'
           . -args
           -version.expected=v1.2.3
           -commit.expected=0123456789abcdef0123456789abcdef01234567
