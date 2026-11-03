@@ -38,6 +38,7 @@ func NewApiServer(store Storage, fs http.Handler, gameProxy *GameProxy) *ApiServ
 
 func (s *ApiServer) InitRoutes() *mux.Router {
 	router := mux.NewRouter()
+	router.HandleFunc("/version", handleVersion)
 	router.HandleFunc("/", makeHTTPHandleFunc(s.handleHome))
 	router.HandleFunc("/games/{id}", makeHTTPHandleFunc(s.handleGames))
 	router.PathPrefix("/assets/games/").Handler(http.StripPrefix("/assets/games/", s.gameProxy))

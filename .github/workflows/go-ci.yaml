@@ -1,0 +1,41 @@
+name: Go CI
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Install pinned templ
+        run: |
+          templ_version=$(go list -m -f '{{.Version}}' github.com/a-h/templ)
+          go install "github.com/a-h/templ/cmd/templ@${templ_version}"
+
+      - name: Generate templ sources
+        run: templ generate
+
+      - name: Run tests with development defaults
+        run: go test ./...
+
+      - name: Test injected release metadata
+        run: >-
+          go test -count=1
+          -ldflags '-X main.version=v1.2.3 -X main.commit=0123456789abcdef0123456789abcdef01234567'
+          . -args
+          -version.expected=v1.2.3
+          -commit.expected=0123456789abcdef0123456789abcdef01234567
+
+      - name: Build app
+        run: go build ./...

@@ -24,7 +24,9 @@ RUN templ generate && \
     tailwindcss -i assets/css/input.css -o assets/css/output.css --minify
 
 # Build the Go binary
-RUN CGO_ENABLED=0 go build -o myapp
+ARG VERSION=dev
+ARG COMMIT=unknown
+RUN CGO_ENABLED=0 go build -ldflags "-X main.version=${VERSION} -X main.commit=${COMMIT}" -o myapp
 
 
 # Stage 2: Create a minimal production image
